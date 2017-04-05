@@ -52,6 +52,7 @@ typedef struct
 typedef struct
 {
 	PID_t e;
+	PID_t c;
 }Gcl_t; // Grabber control loop
 
 typedef struct

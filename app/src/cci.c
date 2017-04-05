@@ -17,15 +17,15 @@
 #include "cci.h"
 
 /*************************************************/
-/*            CBUS Control Interface             */
+/*            CBus Control Interface             */
 /*************************************************/
 
-static void GetPeriphsStateRef(const CBUS_t* cbus)
+static void GetPeriphsStateRef(const CBus_t* cbus)
 {
 
 }
 
-static void GetChassisStateRef(const CBUS_t* cbus)
+static void GetChassisStateRef(const CBus_t* cbus)
 {
 	float pxr = cbus->cp.x / CBUS_VALUE_SCALE;
 	float pyr = cbus->cp.y / CBUS_VALUE_SCALE;
@@ -33,9 +33,9 @@ static void GetChassisStateRef(const CBUS_t* cbus)
 	float vxr = cbus->cv.x / CBUS_VALUE_SCALE;
 	float vyr = cbus->cv.y / CBUS_VALUE_SCALE;
 	float vzr = cbus->cv.z / CBUS_VALUE_SCALE;
-	float dpx = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_MOD) ? pxr - odo.cp.x : pxr;
-	float dpy = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_MOD) ? pyr - odo.cp.y : pyr;
-	float dpz = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_MOD) ? pzr - odo.cp.z : pzr;
+	float dpx = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_ABS) ? pxr - odo.cp.x : pxr;
+	float dpy = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_ABS) ? pyr - odo.cp.y : pyr;
+	float dpz = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_ABS) ? pzr - odo.cp.z : pzr;
 	
 	LIMIT_ABS(vxr, cfg.vel.x);
 	LIMIT_ABS(vyr, cfg.vel.y);
@@ -58,14 +58,14 @@ static void GetChassisStateRef(const CBUS_t* cbus)
 	cmd.cp.z += cmd.cv.z * SYS_CTL_TSC;
 }
 
-static void GetGrabberStateRef(const CBUS_t* cbus)
+static void GetGrabberStateRef(const CBus_t* cbus)
 {
 	float per = cbus->gp.e / CBUS_VALUE_SCALE;
 	float pcr = cbus->gp.c / CBUS_VALUE_SCALE;
 	float ver = cbus->gv.e / CBUS_VALUE_SCALE;
 	float vcr = cbus->gv.c / CBUS_VALUE_SCALE;
-	float dpe = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_MOD) ? per - odo.gp.e : per;
-	float dpc = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_MOD) ? per - odo.gp.c : pcr;
+	float dpe = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_ABS) ? per - odo.gp.e : per;
+	float dpc = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_ABS) ? per - odo.gp.c : pcr;
 	
 	LIMIT(per, cfg.pos.el, cfg.pos.eh);
 	LIMIT(pcr, cfg.pos.cl, cfg.pos.ch);
@@ -91,7 +91,7 @@ void Cci_Init(void)
 {
 }
 
-void Cci_Proc(const CBUS_t* cbus)
+void Cci_Proc(const CBus_t* cbus)
 {
 	GetPeriphsStateRef(cbus);
 	GetChassisStateRef(cbus);

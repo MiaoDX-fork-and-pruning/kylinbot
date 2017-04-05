@@ -20,9 +20,19 @@
 /*             Kylinbot Control Bus               */
 /**************************************************/
 
-void CBUS_Init(CBUS_t* cbus)
+void CBus_Enc(const CBus_t* cbus, uint8_t* buf)
 {
-	memset(cbus, 0, sizeof(CBUS_t));
+	memcpy(buf, cbus, sizeof(CBus_t));
+}
+
+void CBus_Dec(CBus_t* cbus, const uint8_t* buf)
+{
+	memcpy(cbus, buf, sizeof(CBus_t));
+}
+
+void CBus_Init(CBus_t* cbus)
+{
+	memset(cbus, 0, sizeof(CBus_t));
 }
 
 

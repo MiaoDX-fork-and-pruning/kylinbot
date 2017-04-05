@@ -152,19 +152,3 @@ void Ctl_Proc(void)
 	GrabberStateCtl();
 }
 
-void Ctl_Zero(void)
-{
-	Cvl_Init(&pid.cv.x);
-	Cvl_Init(&pid.cv.y);
-	Cvl_Init(&pid.cv.z);
-	
-	Cpl_Init(&pid.cp.x);
-	Cpl_Init(&pid.cp.y);
-	Cpl_Init(&pid.cp.z);
-	
-	memset(&ctl.cv, 0, sizeof(ChassisState_t));
-	memset(&ctl.cc, 0, sizeof(ChassisState_t));
-	memset(&ctl.mv, 0, sizeof(MecanumState_t));
-	memset(&ctl.mc, 0, sizeof(MecanumState_t));
-}
-

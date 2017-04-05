@@ -55,11 +55,17 @@ void Upd_Proc(void)
 				Odo_Proc(); // Odometry process
 				Upd_Init(); // Initialize updater
 				Cmd_Proc(); // Command process
-			} else {
+			} else if (Cal_IsDone()) {
 				Cmd_Proc(); // Command process
 				Odo_Proc(); // Odometry process
 				Ctl_Proc(); // Logic controller process
 				Act_Proc(); // Action process
+			} else {
+				Act_Init(); // Stop any kind of movement
+				Odo_Proc(); // Odometer process
+				Cal_Proc(); // Auto-calibration
+				Upd_Init(); // Initialize updater
+				Cmd_Proc(); // Command process
 			}
 			break;
 		case WORKING_STATE_CONFIG:

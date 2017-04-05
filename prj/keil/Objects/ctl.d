@@ -60,6 +60,7 @@
 .\objects\ctl.o: ..\..\bsp\inc\tty.h
 .\objects\ctl.o: ..\..\app\inc\can.h
 .\objects\ctl.o: ..\..\asp\inc\ekf.h
+.\objects\ctl.o: ..\..\asp\inc\maf.h
 .\objects\ctl.o: ..\..\app\inc\wdg.h
 .\objects\ctl.o: ..\..\asp\inc\pid.h
 .\objects\ctl.o: ..\..\asp\inc\rmp.h

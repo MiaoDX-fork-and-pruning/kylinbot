@@ -18,7 +18,7 @@
 #define __DCI_H__
 
 /*****************************************/
-/*        DBUS Control Interface         */
+/*        DBus Control Interface         */
 /*****************************************/
 
 #include "dbus.h"
@@ -28,10 +28,10 @@
 #include "cal.h"
 
 void Dci_Init(void);
-void Dci_Proc(const DBUS_t* dbus);
+void Dci_Proc(const DBus_t* dbus);
 
 void Rcv_Proc(const uint8_t* buf);
 
-extern DBUS_t dbus;
+extern DBus_t dbus;
 
 #endif

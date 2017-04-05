@@ -67,13 +67,16 @@
 .\objects\com.o: ..\..\asp\inc\fun.h
 .\objects\com.o: ..\..\app\inc\can.h
 .\objects\com.o: ..\..\asp\inc\ekf.h
+.\objects\com.o: ..\..\asp\inc\maf.h
 .\objects\com.o: ..\..\app\inc\wdg.h
 .\objects\com.o: ..\..\app\inc\mec.h
 .\objects\com.o: ..\..\app\inc\cfg.h
 .\objects\com.o: ..\..\app\inc\fos.h
 .\objects\com.o: ..\..\asp\inc\mecanum.h
-.\objects\com.o: ..\..\asp\inc\maf.h
 .\objects\com.o: ..\..\app\inc\cmd.h
+.\objects\com.o: ..\..\app\inc\ctl.h
+.\objects\com.o: ..\..\asp\inc\pid.h
+.\objects\com.o: ..\..\asp\inc\rmp.h
 .\objects\com.o: ..\..\app\inc\dci.h
 .\objects\com.o: ..\..\app\inc\rci.h
 .\objects\com.o: ..\..\asp\inc\rcf.h
@@ -88,6 +91,3 @@
 .\objects\com.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\com.o: ..\..\app\inc\dnl.h
 .\objects\com.o: ..\..\app\inc\cci.h
-.\objects\com.o: ..\..\app\inc\ctl.h
-.\objects\com.o: ..\..\asp\inc\pid.h
-.\objects\com.o: ..\..\asp\inc\rmp.h

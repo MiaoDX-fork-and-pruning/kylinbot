@@ -105,14 +105,3 @@ void Odo_Proc(void)
 	GetGrabberCurrentsFdb();
 }
 
-void Odo_Zero(void)
-{
-	Can_Zero();
-	
-	memset(&odo.cp, 0, sizeof(ChassisState_t));
-	memset(&odo.cv, 0, sizeof(ChassisState_t));
-	memset(&odo.mp, 0, sizeof(MecanumState_t));
-	memset(&odo.mv, 0, sizeof(MecanumState_t));
-	memset(&odo.mc, 0, sizeof(MecanumState_t));
-}
-

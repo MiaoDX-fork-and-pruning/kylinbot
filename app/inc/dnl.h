@@ -33,24 +33,30 @@ extern "C" {
 #include "fun.h"
 	
 #define DNL_BUF_SIZE 256u
-	
+
 void Dnl_Init(void);
 void Dnl_Proc(void);
 
-/*
-extern KylinMsg_t kylinMsg;
-extern SubscMsg_t subscMsg;
-extern VirtualDBUS_t vdbus;
-extern VirtualCBUS_t vcbus;
-extern CalibMsg_t calibMsg;
+extern RcpMsg_t dnlRcpMsg;
+extern HcpMsg_t dnlHcpMsg;
 
-extern PIDCalib_t pidCalib;
-extern IMUCalib_t imuCalib;
-extern MagCalib_t magCalib;
-extern VelCalib_t velCalib;
-extern MecCalib_t mecCalib;
-extern PosCalib_t posCalib;
-*/
+extern MsgType_t dnlMsgType;
+	
+extern DBusMsg_t dnlDBusMsg;
+extern CBusMsg_t dnlCBusMsg;
+
+extern KylinMsg_t dnlKylinMsg;
+extern SubscMsg_t dnlSubscMsg;
+extern CalibMsg_t dnlCalibMsg;
+
+extern PIDCalib_t dnlPIDCalib;
+extern IMUCalib_t dnlIMUCalib;
+extern MagCalib_t dnlMagCalib;
+extern VelCalib_t dnlVelCalib;
+extern MecCalib_t dnlMecCalib;
+extern PosCalib_t dnlPosCalib;
+
+
 
 #ifdef __cplusplus
 }

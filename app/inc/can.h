@@ -26,6 +26,7 @@ extern "C" {
 #endif
 
 #include "ekf.h"
+#include "maf.h"
 #include "fun.h"
 #include "wdg.h"
 
@@ -47,6 +48,7 @@ extern "C" {
 #define MOTOR_RATE_EKF_R 1.3f
 #define MOTOR_ANGLE_EKF_Q 0.01f
 #define MOTOR_ANGLE_EKF_R 0.9f
+#define MOTOR_RATE_BUF_LEN 6
 
 #define MOTOR_RATE_DEG_RECIP 43.94531f
 #define MOTOR_RATE_RAD_RECIP 0.7669904f
@@ -77,7 +79,10 @@ typedef struct
 {
 	uint32_t id;
 	uint32_t frame_cnt;
-	Ekf_t rate_ekf;
+	
+	Maf_t rate_maf;
+	float rate_buf[MOTOR_RATE_BUF_LEN];
+	//Ekf_t rate_ekf;
 	Ekf_t angle_ekf;
 	uint16_t angle_fdb[2];
 	int32_t current_fdb;
@@ -104,8 +109,6 @@ void Motor_Reset(Motor_t* motor);
 
 void Can_Init(void);
 void Can_Proc(uint32_t id, uint8_t* data);
-uint8_t Can_Ready(void);
-void Can_Zero(void);
 
 extern ZGyro_t zgyro;
 extern Motor_t motor[MOTOR_NUM];

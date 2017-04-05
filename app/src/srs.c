@@ -66,13 +66,13 @@ void Srs_Proc(void)
 void Sr04_Proc(uint8_t i, uint8_t trigger)
 {
 	if (i == SR04_IDX_FIXED) {
-		Wdg_Feed(WDG_IDX_SR04F);
+		Wdg_Feed(WDG_IDX_SONAR1);
 	} else if (i == SR04_IDX_MOBLE) {
-		Wdg_Feed(WDG_IDX_SR04M);
+		Wdg_Feed(WDG_IDX_SONAR2);
 	} else if (i == SR04_IDX_LEFT) {
-		Wdg_Feed(WDG_IDX_SR04L);
+		Wdg_Feed(WDG_IDX_SONAR3);
 	} else if (i == SR04_IDX_RIGHT) {
-		Wdg_Feed(WDG_IDX_SR04R);
+		Wdg_Feed(WDG_IDX_SONAR4);
 	}
 	if (i < SR04_NUM) {
 		// Rising edge trigger -> start echo

@@ -69,11 +69,11 @@
 .\objects\dnl.o: ..\..\app\inc\sys.h
 .\objects\dnl.o: ..\..\app\inc\can.h
 .\objects\dnl.o: ..\..\asp\inc\ekf.h
+.\objects\dnl.o: ..\..\asp\inc\maf.h
 .\objects\dnl.o: ..\..\app\inc\mec.h
 .\objects\dnl.o: ..\..\app\inc\cfg.h
 .\objects\dnl.o: ..\..\app\inc\fos.h
 .\objects\dnl.o: ..\..\asp\inc\mecanum.h
-.\objects\dnl.o: ..\..\asp\inc\maf.h
 .\objects\dnl.o: ..\..\app\inc\dci.h
 .\objects\dnl.o: ..\..\app\inc\rci.h
 .\objects\dnl.o: ..\..\asp\inc\rcf.h

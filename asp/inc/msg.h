@@ -60,29 +60,26 @@ typedef union MsgHead_t
 typedef struct
 {
 	uint32_t frame_id;
-	uint8_t buf[RCP_FRAME_LEN];
-}VirtualRC_t;
+	uint8_t data[RCP_FRAME_LEN];
+}RcpMsg_t;
 
 typedef struct
 {
 	uint32_t frame_id;
-	uint8_t buf[HCP_FRAME_LEN];
-}VirtualHC_t;
+	uint8_t data[HCP_FRAME_LEN];
+}HcpMsg_t;
 
 typedef struct
 {
 	uint32_t frame_id;
-	uint8_t buf[DBUS_FRAME_LEN];
-}VirtualDBUS_t;
+	uint8_t data[DBUS_FRAME_LEN];
+}DBusMsg_t;
 
-#define ZGYRO_ANGLE_RECIP 1e-2f // To scale zgyro angle to deg
-#define ZGYRO_RATE_RECIP 1e-5f // To scale zgyro rate to deg/s
 typedef struct
 {
 	uint32_t frame_id;
-	int32_t angle; // = (deg*100)
-	int16_t rate; // = delta(angle)/1ms
-}ZGyroMsg_t;
+	uint8_t data[CBUS_FRAME_LEN];
+}CBusMsg_t;
 
 #define MOTOR1_ID 0
 #define MOTOR2_ID 1
@@ -117,6 +114,26 @@ typedef struct
 	int16_t mz;
 }IMU9XMsg_t;
 
+#define ZGYRO_ANGLE_RECIP 1e-2f // To scale zgyro angle to deg
+#define ZGYRO_RATE_RECIP 1e-5f // To scale zgyro rate to deg/s
+typedef struct
+{
+	uint32_t frame_id;
+	int32_t angle; // = (deg*100)
+	int16_t rate; // = delta(angle)/1ms
+}ZGyroMsg_t;
+
+#define SONAR_NUM 4
+#define SONAR_IDX_F 0
+#define SONAR_IDX_M 1
+#define SONAR_IDX_L 2
+#define SONAR_IDX_R 3
+typedef struct
+{
+	uint32_t frame_id;
+	int16_t data[SONAR_NUM];
+}SonarMsg_t;
+
 #define ODOME_MSG_VALUE_SCALE 1e3f
 typedef struct
 {
@@ -141,7 +158,8 @@ typedef struct
 
 #define CALIB_FLAG_BIT_IMU (1u<<0)
 #define CALIB_FLAG_BIT_MAG (1u<<1)
-#define CALIB_FLAG_BIT_POS (1u<<2)
+#define CALIB_FLAG_BIT_GIM (1u<<2)
+#define CALIB_FLAG_BIT_ODO (1u<<3)
 typedef struct
 {
 	uint32_t frame_id;
@@ -164,19 +182,7 @@ typedef struct
 typedef struct
 {
 	uint32_t frame_id;
-	uint16_t fixed;
-	uint16_t moble;
-	uint16_t left;
-	uint16_t right;
-}Sr04sMsg_t;
-
-#define KYLIN_MSG_VALUE_SCALE CBUS_VALUE_SCALE
-#define MYLIN_MSG_FLAG_BIT_INI (1u<<31u)
-#define MYLIN_MSG_FLAG_BIT_MOD (1u<<30u)
-typedef struct
-{
-	uint32_t frame_id;
-	CBUS_t cbus;
+	CBus_t cbus; // Control bus
 }KylinMsg_t;
 
 typedef struct
@@ -215,35 +221,42 @@ typedef struct
 	PosCalib_t data;
 }PosCalibMsg_t;
 
-#define WRAP_U8(V) ((uint8_t)V)
-#define WRAP_U16(V) ((uint16_t)V)
-#define WRAP_U32(V) ((uint32_t)V)
+typedef struct
+{
+	uint32_t frame_id;
+	EpsCalib_t data;
+}EpsCalibMsg_t;
 
-#define MSG_ID_VRC WRAP_U8(0x01)
-#define MSG_ID_VHC WRAP_U8(0x02)
-#define MSG_ID_VDBUS WRAP_U8(0x03)
-#define MSG_ID_CBUS WRAP_U8(0x04)
-#define MSG_ID_ZGYRO WRAP_U8(0x05)
-#define MSG_ID_IMU9X WRAP_U8(0x06)
-#define MSG_ID_MOTOR WRAP_U8(0x07)
-#define MSG_ID_ODOME WRAP_U8(0x08)
-#define MSG_ID_GRASP WRAP_U8(0x09)
-#define MSG_ID_STATU WRAP_U8(0x0a)
-#define MSG_ID_SUBSC WRAP_U8(0x0b)
-#define MSG_ID_CALIB WRAP_U8(0x0c)
-#define MSG_ID_KYLIN WRAP_U8(0x0d)
-#define MSG_ID_PID_CALIB WRAP_U8(0x0e)
-#define MSG_ID_IMU_CALIB WRAP_U8(0x0f)
-#define MSG_ID_MAG_CALIB WRAP_U8(0x10)
-#define MSG_ID_VEL_CALIB WRAP_U8(0x11)
-#define MSG_ID_MEC_CALIB WRAP_U8(0x12)
-#define MSG_ID_POS_CALIB WRAP_U8(0x13)
-#define MSG_ID_SR04S WRAP_U8(0x14)
+#define MSG_WRAP_U8(V) ((uint8_t)V)
+#define MSG_WRAP_U16(V) ((uint16_t)V)
+#define MSG_WRAP_U32(V) ((uint32_t)V)
 
-#define MSG_LEN_VRC sizeof(VirtualRC_t)
-#define MSG_LEN_VHC sizeof(VirtualHC_t)
-#define MSG_LEN_VDBUS sizeof(VirtualDBUS_t)
-#define MSG_LEN_CBUS sizeof(CBUS_t)
+#define MSG_ID_RCP MSG_WRAP_U8(0x01)
+#define MSG_ID_HCP MSG_WRAP_U8(0x02)
+#define MSG_ID_DBUS MSG_WRAP_U8(0x03)
+#define MSG_ID_CBUS MSG_WRAP_U8(0x04)
+#define MSG_ID_ZGYRO MSG_WRAP_U8(0x05)
+#define MSG_ID_IMU9X MSG_WRAP_U8(0x06)
+#define MSG_ID_MOTOR MSG_WRAP_U8(0x07)
+#define MSG_ID_ODOME MSG_WRAP_U8(0x08)
+#define MSG_ID_GRASP MSG_WRAP_U8(0x09)
+#define MSG_ID_STATU MSG_WRAP_U8(0x0a)
+#define MSG_ID_SUBSC MSG_WRAP_U8(0x0b)
+#define MSG_ID_CALIB MSG_WRAP_U8(0x0c)
+#define MSG_ID_KYLIN MSG_WRAP_U8(0x0d)
+#define MSG_ID_SONAR MSG_WRAP_U8(0x0e)
+#define MSG_ID_PID_CALIB MSG_WRAP_U8(0x0f)
+#define MSG_ID_IMU_CALIB MSG_WRAP_U8(0x10)
+#define MSG_ID_MAG_CALIB MSG_WRAP_U8(0x11)
+#define MSG_ID_VEL_CALIB MSG_WRAP_U8(0x12)
+#define MSG_ID_MEC_CALIB MSG_WRAP_U8(0x13)
+#define MSG_ID_POS_CALIB MSG_WRAP_U8(0x14)
+#define MSG_ID_EPS_CALIB MSG_WRAP_U8(0x15)
+
+#define MSG_LEN_RCP sizeof(RcpMsg_t)
+#define MSG_LEN_HCP sizeof(HcpMsg_t)
+#define MSG_LEN_DBUS sizeof(DBusMsg_t)
+#define MSG_LEN_CBUS sizeof(CBusMsg_t)
 #define MSG_LEN_ZGYRO sizeof(ZGyroMsg_t)
 #define MSG_LEN_IMU9X sizeof(IMU9XMsg_t)
 #define MSG_LEN_MOTOR sizeof(MotorMsg_t)
@@ -253,41 +266,43 @@ typedef struct
 #define MSG_LEN_SUBSC sizeof(SubscMsg_t)
 #define MSG_LEN_CALIB sizeof(CalibMsg_t)
 #define MSG_LEN_KYLIN sizeof(KylinMsg_t)
+#define MSG_LEN_SONAR sizeof(SonarMsg_t)
 #define MSG_LEN_PID_CALIB sizeof(PIDCalibMsg_t)
 #define MSG_LEN_IMU_CALIB sizeof(IMUCalibMsg_t)
 #define MSG_LEN_MAG_CALIB sizeof(MagCalibMsg_t)
 #define MSG_LEN_VEL_CALIB sizeof(VelCalibMsg_t)
 #define MSG_LEN_MEC_CALIB sizeof(MecCalibMsg_t)
 #define MSG_LEN_POS_CALIB sizeof(PosCalibMsg_t)
-#define MSG_LEN_SR04S sizeof(Sr04sMsg_t)
+#define MSG_LEN_EPS_CALIB sizeof(EpsCalibMsg_t)
 	
-#define MSG_TOKEN_VRC WRAP_U16(0x1234)
-#define MSG_TOKEN_VHC WRAP_U16(0x2345)
-#define MSG_TOKEN_VDBUS WRAP_U16(0x3456)
-#define MSG_TOKEN_CBUS WRAP_U16(0x4567)
-#define MSG_TOKEN_ZGYRO WRAP_U16(0x5678)
-#define MSG_TOKEN_IMU9X WRAP_U16(0x6789)
-#define MSG_TOKEN_MOTOR WRAP_U16(0x789a)
-#define MSG_TOKEN_ODOME WRAP_U16(0x89ab)
-#define MSG_TOKEN_GRASP WRAP_U16(0x9abc)
-#define MSG_TOKEN_STATU WRAP_U16(0xabcd)
-#define MSG_TOKEN_SUBSC WRAP_U16(0xbcde)
-#define MSG_TOKEN_CALIB WRAP_U16(0xcdef)
-#define MSG_TOKEN_KYLIN WRAP_U16(0xfedc)
-#define MSG_TOKEN_PID_CALIB WRAP_U16(0xedcb)
-#define MSG_TOKEN_IMU_CALIB WRAP_U16(0xdcba)
-#define MSG_TOKEN_MAG_CALIB WRAP_U16(0xcba9)
-#define MSG_TOKEN_VEL_CALIB WRAP_U16(0xba98)
-#define MSG_TOKEN_MEC_CALIB WRAP_U16(0xa987)
-#define MSG_TOKEN_POS_CALIB WRAP_U16(0x9876)
-#define MSG_TOKEN_SR04S WRAP_U16(0x8765)
+#define MSG_TOKEN_RCP MSG_WRAP_U16(0x1234)
+#define MSG_TOKEN_HCP MSG_WRAP_U16(0x2345)
+#define MSG_TOKEN_DBUS MSG_WRAP_U16(0x3456)
+#define MSG_TOKEN_CBUS MSG_WRAP_U16(0x4567)
+#define MSG_TOKEN_ZGYRO MSG_WRAP_U16(0x5678)
+#define MSG_TOKEN_IMU9X MSG_WRAP_U16(0x6789)
+#define MSG_TOKEN_MOTOR MSG_WRAP_U16(0x789a)
+#define MSG_TOKEN_ODOME MSG_WRAP_U16(0x89ab)
+#define MSG_TOKEN_GRASP MSG_WRAP_U16(0x9abc)
+#define MSG_TOKEN_STATU MSG_WRAP_U16(0xabcd)
+#define MSG_TOKEN_SUBSC MSG_WRAP_U16(0xbcde)
+#define MSG_TOKEN_CALIB MSG_WRAP_U16(0xcdef)
+#define MSG_TOKEN_KYLIN MSG_WRAP_U16(0xfedc)
+#define MSG_TOKEN_SONAR MSG_WRAP_U16(0xedcb)
+#define MSG_TOKEN_PID_CALIB MSG_WRAP_U16(0xdcba)
+#define MSG_TOKEN_IMU_CALIB MSG_WRAP_U16(0xcba9)
+#define MSG_TOKEN_MAG_CALIB MSG_WRAP_U16(0xba98)
+#define MSG_TOKEN_VEL_CALIB MSG_WRAP_U16(0xa987)
+#define MSG_TOKEN_MEC_CALIB MSG_WRAP_U16(0x9876)
+#define MSG_TOKEN_POS_CALIB MSG_WRAP_U16(0x8765)
+#define MSG_TOKEN_EPS_CALIB MSG_WRAP_U16(0x7654)
 
-#define MSG_HEAD_VALUE(ID,LEN,TOKEN) ((WRAP_U32(TOKEN)<<16) | (WRAP_U32(LEN)<<8) | WRAP_U32(ID))
+#define MSG_HEAD_VALUE(ID,LEN,TOKEN) ((MSG_WRAP_U32(TOKEN)<<16) | (MSG_WRAP_U32(LEN)<<8) | MSG_WRAP_U32(ID))
 #define MSG_HEAD_VALUE_OF(NAME) MSG_HEAD_VALUE(MSG_ID_##NAME,MSG_LEN_##NAME,MSG_TOKEN_##NAME)
 
-#define MSG_HEAD_VALUE_VRC MSG_HEAD_VALUE_OF(VRC)
-#define MSG_HEAD_VALUE_VHC MSG_HEAD_VALUE_OF(VHC)
-#define MSG_HEAD_VALUE_VDBUS MSG_HEAD_VALUE_OF(VDBUS)
+#define MSG_HEAD_VALUE_RCP MSG_HEAD_VALUE_OF(RCP)
+#define MSG_HEAD_VALUE_HCP MSG_HEAD_VALUE_OF(HCP)
+#define MSG_HEAD_VALUE_DBUS MSG_HEAD_VALUE_OF(DBUS)
 #define MSG_HEAD_VALUE_CBUS MSG_HEAD_VALUE_OF(CBUS)
 #define MSG_HEAD_VALUE_ZGYRO MSG_HEAD_VALUE_OF(ZGYRO)
 #define MSG_HEAD_VALUE_IMU9X MSG_HEAD_VALUE_OF(IMU9X)
@@ -298,17 +313,18 @@ typedef struct
 #define MSG_HEAD_VALUE_SUBSC MSG_HEAD_VALUE_OF(SUBSC)
 #define MSG_HEAD_VALUE_CALIB MSG_HEAD_VALUE_OF(CALIB)
 #define MSG_HEAD_VALUE_KYLIN MSG_HEAD_VALUE_OF(KYLIN)
+#define MSG_HEAD_VALUE_SONAR MSG_HEAD_VALUE_OF(SONAR)
 #define MSG_HEAD_VALUE_PID_CALIB MSG_HEAD_VALUE_OF(PID_CALIB)
 #define MSG_HEAD_VALUE_IMU_CALIB MSG_HEAD_VALUE_OF(IMU_CALIB)
 #define MSG_HEAD_VALUE_MAG_CALIB MSG_HEAD_VALUE_OF(MAG_CALIB)
 #define MSG_HEAD_VALUE_VEL_CALIB MSG_HEAD_VALUE_OF(VEL_CALIB)
 #define MSG_HEAD_VALUE_MEC_CALIB MSG_HEAD_VALUE_OF(MEC_CALIB)
 #define MSG_HEAD_VALUE_POS_CALIB MSG_HEAD_VALUE_OF(POS_CALIB)
-#define MSG_HEAD_VALUE_SR04S MSG_HEAD_VALUE_OF(SR04S)
+#define MSG_HEAD_VALUE_EPS_CALIB MSG_HEAD_VALUE_OF(EPS_CALIB)
 
-#define MSG_HEAD_VRC { MSG_HEAD_VALUE_VRC }
-#define MSG_HEAD_VHC { MSG_HEAD_VALUE_VHC }
-#define MSG_HEAD_VDBUS { MSG_HEAD_VALUE_VDBUS }
+#define MSG_HEAD_RCP { MSG_HEAD_VALUE_RCP }
+#define MSG_HEAD_HCP { MSG_HEAD_VALUE_HCP }
+#define MSG_HEAD_DBUS { MSG_HEAD_VALUE_DBUS }
 #define MSG_HEAD_CBUS { MSG_HEAD_VALUE_CBUS }
 #define MSG_HEAD_ZGYRO { MSG_HEAD_VALUE_ZGYRO }
 #define MSG_HEAD_IMU9X { MSG_HEAD_VALUE_IMU9X }
@@ -319,17 +335,18 @@ typedef struct
 #define MSG_HEAD_SUBSC { MSG_HEAD_VALUE_SUBSC }
 #define MSG_HEAD_CALIB { MSG_HEAD_VALUE_CALIB }
 #define MSG_HEAD_KYLIN { MSG_HEAD_VALUE_KYLIN }
+#define MSG_HEAD_SONAR { MSG_HEAD_VALUE_SONAR }
 #define MSG_HEAD_PID_CALIB { MSG_HEAD_VALUE_PID_CALIB }
 #define MSG_HEAD_IMU_CALIB { MSG_HEAD_VALUE_IMU_CALIB }
 #define MSG_HEAD_MAG_CALIB { MSG_HEAD_VALUE_MAG_CALIB }
 #define MSG_HEAD_VEL_CALIB { MSG_HEAD_VALUE_VEL_CALIB }
 #define MSG_HEAD_MEC_CALIB { MSG_HEAD_VALUE_MEC_CALIB }
 #define MSG_HEAD_POS_CALIB { MSG_HEAD_VALUE_POS_CALIB }
-#define MSG_HEAD_SR04S { MSG_HEAD_VALUE_SR04S }
+#define MSG_HEAD_EPS_CALIB { MSG_HEAD_VALUE_EPS_CALIB }
 
-#define MSG_TYPE_IDX_VRC 0u
-#define MSG_TYPE_IDX_VHC 1u
-#define MSG_TYPE_IDX_VDBUS 2u
+#define MSG_TYPE_IDX_RCP 0u
+#define MSG_TYPE_IDX_HCP 1u
+#define MSG_TYPE_IDX_DBUS 2u
 #define MSG_TYPE_IDX_CBUS 3u
 #define MSG_TYPE_IDX_ZGYRO 4u
 #define MSG_TYPE_IDX_IMU9X 5u
@@ -340,19 +357,20 @@ typedef struct
 #define MSG_TYPE_IDX_SUBSC 10u
 #define MSG_TYPE_IDX_CALIB 11u
 #define MSG_TYPE_IDX_KYLIN 12u
-#define MSG_TYPE_IDX_PID_CALIB 13u
-#define MSG_TYPE_IDX_IMU_CALIB 14u
-#define MSG_TYPE_IDX_MAG_CALIB 15u
-#define MSG_TYPE_IDX_VEL_CALIB 16u
-#define MSG_TYPE_IDX_MEC_CALIB 17u
-#define MSG_TYPE_IDX_POS_CALIB 18u
-#define MSG_TYPE_IDX_SR04S 19u
+#define MSG_TYPE_IDX_SONAR 13u
+#define MSG_TYPE_IDX_PID_CALIB 14u
+#define MSG_TYPE_IDX_IMU_CALIB 15u
+#define MSG_TYPE_IDX_MAG_CALIB 16u
+#define MSG_TYPE_IDX_VEL_CALIB 17u
+#define MSG_TYPE_IDX_MEC_CALIB 18u
+#define MSG_TYPE_IDX_POS_CALIB 19u
+#define MSG_TYPE_IDX_EPS_CALIB 20u
 
 typedef enum
 {
-	MSG_TYPE_VRC = 1u << MSG_TYPE_IDX_VRC,
-	MSG_TYPE_VHC = 1u << MSG_TYPE_IDX_VHC,
-	MSG_TYPE_VDBUS = 1u << MSG_TYPE_IDX_VDBUS,
+	MSG_TYPE_RCP = 1u << MSG_TYPE_IDX_RCP,
+	MSG_TYPE_HCP = 1u << MSG_TYPE_IDX_HCP,
+	MSG_TYPE_DBUS = 1u << MSG_TYPE_IDX_DBUS,
 	MSG_TYPE_CBUS = 1u << MSG_TYPE_IDX_CBUS,
 	MSG_TYPE_ZGYRO = 1u << MSG_TYPE_IDX_ZGYRO,
 	MSG_TYPE_IMU9X = 1u << MSG_TYPE_IDX_IMU9X,
@@ -363,13 +381,14 @@ typedef enum
 	MSG_TYPE_SUBSC = 1u << MSG_TYPE_IDX_SUBSC,
 	MSG_TYPE_CALIB = 1u << MSG_TYPE_IDX_CALIB,
 	MSG_TYPE_KYLIN = 1u << MSG_TYPE_IDX_KYLIN,
+	MSG_TYPE_SONAR = 1u << MSG_TYPE_IDX_SONAR,
 	MSG_TYPE_PID_CALIB = 1u << MSG_TYPE_IDX_PID_CALIB,
 	MSG_TYPE_IMU_CALIB = 1u << MSG_TYPE_IDX_IMU_CALIB,
 	MSG_TYPE_MAG_CALIB = 1u << MSG_TYPE_IDX_MAG_CALIB,
 	MSG_TYPE_VEL_CALIB = 1u << MSG_TYPE_IDX_VEL_CALIB,
 	MSG_TYPE_MEC_CALIB = 1u << MSG_TYPE_IDX_MEC_CALIB,
 	MSG_TYPE_POS_CALIB = 1u << MSG_TYPE_IDX_POS_CALIB,
-	MSG_TYPE_SR04S = 1u << MSG_TYPE_IDX_SR04S,
+	MSG_TYPE_EPS_CALIB = 1u << MSG_TYPE_IDX_EPS_CALIB,
 }MsgType_t;
 
 #pragma pack()
@@ -394,10 +413,10 @@ uint32_t Msg_Push(FIFO_t* fifo, void* buf, const void* head, const void* body);
  */
 uint32_t Msg_Pop(FIFO_t* fifo, void* buf, const void* head, void* body);
 
-extern const MsgHead_t msg_head_vrc;
-extern const MsgHead_t msg_head_vhc;
-extern const MsgHead_t msg_head_vdbus;
-extern const MsgHead_t msg_head_vcbus;
+extern const MsgHead_t msg_head_rcp;
+extern const MsgHead_t msg_head_hcp;
+extern const MsgHead_t msg_head_dbus;
+extern const MsgHead_t msg_head_cbus;
 extern const MsgHead_t msg_head_zgyro;
 extern const MsgHead_t msg_head_imu9x;
 extern const MsgHead_t msg_head_motor;
@@ -407,13 +426,14 @@ extern const MsgHead_t msg_head_statu;
 extern const MsgHead_t msg_head_subsc;
 extern const MsgHead_t msg_head_calib;
 extern const MsgHead_t msg_head_kylin;
+extern const MsgHead_t msg_head_sonar;
 extern const MsgHead_t msg_head_pid_calib;
 extern const MsgHead_t msg_head_imu_calib;
 extern const MsgHead_t msg_head_mag_calib;
 extern const MsgHead_t msg_head_vel_calib;
 extern const MsgHead_t msg_head_mec_calib;
 extern const MsgHead_t msg_head_pos_calib;
-extern const MsgHead_t msg_head_sr04s;
+extern const MsgHead_t msg_head_eps_calib;
 
 #ifdef __cplusplus
 }

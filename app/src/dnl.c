@@ -24,172 +24,93 @@
 /*        Down-Link Communication        */
 /*****************************************/
 
-static KylinMsg_t kylinMsg;
+RcpMsg_t dnlRcpMsg;
+HcpMsg_t dnlHcpMsg;
 
-static VirtualRC_t vrc;
-static VirtualHC_t vhc;
-static VirtualDBUS_t vdbus;
+MsgType_t dnlMsgType;
 
-static CBUS_t cbus;
+DBusMsg_t dnlDBusMsg;
+CBusMsg_t dnlCBusMsg;
 
-/*
-SubscMsg_t subscMsg;
-CalibMsg_t calibMsg;
+KylinMsg_t dnlKylinMsg;
+SubscMsg_t dnlSubscMsg;
+CalibMsg_t dnlCalibMsg;
 
-PIDCalib_t pidCalib;
-IMUCalib_t imuCalib;
-MagCalib_t magCalib;
-VelCalib_t velCalib;
-MecCalib_t mecCalib;
-PosCalib_t posCalib;
-*/
+PIDCalib_t dnlPIDCalib;
+IMUCalib_t dnlIMUCalib;
+MagCalib_t dnlMagCalib;
+VelCalib_t dnlVelCalib;
+MecCalib_t dnlMecCalib;
+PosCalib_t dnlPosCalib;
 
 static uint8_t buf[2][DNL_BUF_SIZE];
 static FIFO_t fifo;
 
-static void Dnl_ProcVRC(const VirtualRC_t* vrc)
+static void Dnl_ProcRcpMsg(const RcpMsg_t* rcpMsg)
 {
-	Wdg_Feed(WDG_IDX_VRC);
+	dnlMsgType |= MSG_TYPE_RCP;
 	if (Rci_Sw(SW_IDX_R) == SW_DN) {
-		Rcp_Dec(&dbus.rcp, vrc->buf);
+		Rcp_Dec(&dbus.rcp, rcpMsg->data);
 		Rci_Proc(&dbus.rcp);
 	}
 }
 
-static void Dnl_ProcVHC(const VirtualHC_t* vhc)
+static void Dnl_ProcHcpMsg(const HcpMsg_t* hcpMsg)
 {
-	Wdg_Feed(WDG_IDX_VHC);
+	dnlMsgType |= MSG_TYPE_HCP;
 	if (Rci_Sw(SW_IDX_R) == SW_DN) {
-		Hcp_Dec(&dbus.hcp, vhc->buf);
+		Hcp_Dec(&dbus.hcp, hcpMsg->data);
 		Hci_Proc(&dbus.hcp);
 	}
 }
 
-static void Dnl_ProcVDBUS(const VirtualDBUS_t* vdbus)
+static void Dnl_ProcDBusMsg(const DBusMsg_t* dbusMsg)
 {
-	Wdg_Feed(WDG_IDX_VDBUS);
+	dnlMsgType |= MSG_TYPE_DBUS;
 	// To use this mode, the remote controller must be turned of.
 	if (Wdg_HasErr(WDG_ERR_RCV)) {
-		DBUS_Dec(&dbus, vdbus->buf);
+		DBus_Dec(&dbus, dbusMsg->data);
 		Dci_Proc(&dbus);
 	}
 }
 
-static void Dnl_ProcCBUS(const CBUS_t* vcbus)
+static void Dnl_ProcCBusMsg(const CBusMsg_t* cbusMsg)
 {
-	Wdg_Feed(WDG_IDX_CBUS);
+	dnlMsgType |= MSG_TYPE_CBUS;
 	if (Rci_Sw(SW_IDX_R) == SW_DN) {
-		Cci_Proc(vcbus);
+		Cci_Proc((CBus_t*)cbusMsg->data);
 	}
 }
 
-/*
 static void Dnl_ProcSubscMsg(const SubscMsg_t* subscMsg)
 {
+	dnlMsgType |= MSG_TYPE_SUBSC;
 	if (subscMsg->msg_type & MSG_TYPE_CALIB) {
 	}
 }
 
 static void Dnl_ProcCalibMsg(const CalibMsg_t* calibMsg)
 {
-	Wdg_Feed(WDG_IDX_CALIB);
-	if (calibMsg->auto_cali_flag & CALIB_FLAG_BIT_POS) {
-		Cal_Init();
+	dnlMsgType |= MSG_TYPE_CALIB;
+	if (calibMsg->auto_cali_flag & CALIB_FLAG_BIT_GIM) {
+		Cal_ClrFlag(CAL_FLAG_GIM);
+	}
+	if (calibMsg->auto_cali_flag & CALIB_FLAG_BIT_ODO) {
+		Cal_ClrFlag(CAL_FLAG_ODO);
 	}
 }
-*/
 
 static void Dnl_ProcKylinMsg(const KylinMsg_t* kylinMsg)
 {
-	Wdg_Feed(WDG_IDX_KYLIN);
+	dnlMsgType |= MSG_TYPE_KYLIN;
 	if (Rci_Sw(1) == SW_DN && Wsm_GetWs() == WORKING_STATE_NORMAL) {
 		Cci_Proc(&kylinMsg->cbus);
 	}
 }
 
-
-/*
-#define DPCT_MAX 3.0f
-#define DPCR_MAX 3.0f
-#define DPGE_MAX 3.0f
-#define DPGC_MAX 3.0f
-#define DPCT_KP 10.0f
-#define DPCR_KP 10.0f
-#define DPGE_KP 10.0f 
-#define DPGC_KP 10.0f
-static void Dnl_ProcKylinMsg(const KylinMsg_t* kylinMsg)
-{
-	Wdg_Feed(WDG_IDX_KYLIN);
-	if (Rci_Sw(1) == SW_DN && Wsm_GetWs() == WORKING_STATE_NORMAL) {
-		float pxr = kylinMsg->cp.x / KYLIN_MSG_VALUE_SCALE;
-		float pyr = kylinMsg->cp.y / KYLIN_MSG_VALUE_SCALE;
-		float pzr = kylinMsg->cp.z / KYLIN_MSG_VALUE_SCALE;
-		float per = kylinMsg->gp.e / KYLIN_MSG_VALUE_SCALE;
-		float pcr = kylinMsg->gp.c / KYLIN_MSG_VALUE_SCALE;
-		float vxr = kylinMsg->cv.x / KYLIN_MSG_VALUE_SCALE;
-		float vyr = kylinMsg->cv.y / KYLIN_MSG_VALUE_SCALE;
-		float vzr = kylinMsg->cv.z / KYLIN_MSG_VALUE_SCALE;
-		float ver = kylinMsg->gv.e / KYLIN_MSG_VALUE_SCALE;
-		float vcr = kylinMsg->gv.c / KYLIN_MSG_VALUE_SCALE;
-		
-		LIMIT_ABS(vxr, cfg.vel.x);
-		LIMIT_ABS(vyr, cfg.vel.y);
-		LIMIT_ABS(vzr, cfg.vel.z);
-		LIMIT_ABS(ver, cfg.vel.e);
-		LIMIT_ABS(vcr, cfg.vel.c);
-		
-		float dpx = (pxr - odo.cp.x) * DPCT_KP;
-		float dpy = (pyr - odo.cp.y) * DPCT_KP;
-		float dpz = (pzr - odo.cp.z) * DPCR_KP;
-		float dpe = (per - odo.gp.e) * DPGE_KP;
-		float dpc = (pcr - odo.gp.c) * DPGC_KP;
-		
-		LIMIT_ABS(dpx, DPCT_MAX);
-		LIMIT_ABS(dpy, DPCT_MAX);
-		LIMIT_ABS(dpz, DPCR_MAX);
-		LIMIT_ABS(dpe, DPGE_MAX);
-		LIMIT_ABS(dpc, DPGC_MAX);
-		
-		float vxc = map(dpx, -DPCT_MAX, DPCT_MAX, -1, 1);
-		float vyc = map(dpy, -DPCT_MAX, DPCT_MAX, -1, 1);
-		float vzc = map(dpz, -DPCR_MAX, DPCR_MAX, -1, 1);
-		float vec = map(dpe, -DPGE_MAX, DPGE_MAX, -1, 1);
-		float vcc = map(dpc, -DPGC_MAX, DPGC_MAX, -1, 1);
-		
-		cmd.cv.x = vxc * vxr;
-		cmd.cv.y = vyc * vyr;
-		cmd.cv.z = vzc * vzr;
-		cmd.gv.e = vec * ver;
-		cmd.gv.c = vcc * vcr;
-		
-		//cmd.cv.x = kylinMsg->cv.x / KYLIN_MSG_VALUE_SCALE;
-		LIMIT(cmd.cv.x, -cfg.vel.x, cfg.vel.x);
-		cmd.cp.x += cmd.cv.x * SYS_CTL_TSC;
-		
-		//cmd.cv.y = kylinMsg->cv.y / KYLIN_MSG_VALUE_SCALE;
-		LIMIT(cmd.cv.y, -cfg.vel.y, cfg.vel.y);
-		cmd.cp.y += cmd.cv.y * SYS_CTL_TSC;
-		
-		//cmd.cv.z = kylinMsg->cv.z / KYLIN_MSG_VALUE_SCALE;
-		LIMIT(cmd.cv.z, -cfg.vel.z, cfg.vel.z);
-		cmd.cp.z += cmd.cv.z * SYS_CTL_TSC;
-		
-		//cmd.gv.e = kylinMsg->gv.e / KYLIN_MSG_VALUE_SCALE;
-		LIMIT(cmd.gv.e, -cfg.vel.e, cfg.vel.e);
-		cmd.gp.e += cmd.gv.e * SYS_CTL_TSC;
-		LIMIT(cmd.gp.e, cfg.pos.el, cfg.pos.eh);
-		
-		//cmd.gv.c = kylinMsg->gv.c / KYLIN_MSG_VALUE_SCALE;
-		LIMIT(cmd.gv.c, -cfg.vel.c, cfg.vel.c);
-		cmd.gp.c += cmd.gv.c * SYS_CTL_TSC;
-		LIMIT(cmd.gp.c, cfg.pos.cl, cfg.pos.ch);
-	}
-}
-*/
-
-/*
 static void Dnl_ProcIMUCalib(const IMUCalib_t* IMUCalib)
 {
+	dnlMsgType |= MSG_TYPE_IMU_CALIB;
 	Calib_SetIMU(&cfg.imu, IMUCalib);
 	Cfg_SetFlag(CFG_FLAG_IMU);
 	cfg_sync_flag = 1;
@@ -197,6 +118,7 @@ static void Dnl_ProcIMUCalib(const IMUCalib_t* IMUCalib)
 
 static void Dnl_ProcMagCalib(const MagCalib_t* MagCalib)
 {
+	dnlMsgType |= MSG_TYPE_MAG_CALIB;
 	Calib_SetMag(&cfg.mag, MagCalib);
 	Cfg_SetFlag(CFG_FLAG_MAG);
 	cfg_sync_flag = 1;
@@ -204,6 +126,7 @@ static void Dnl_ProcMagCalib(const MagCalib_t* MagCalib)
 
 static void Dnl_ProcVelCalib(const VelCalib_t* VelCalib)
 {
+	dnlMsgType |= MSG_TYPE_VEL_CALIB;
 	Calib_SetVel(&cfg.vel, VelCalib);
 	Cfg_SetFlag(CFG_FLAG_VEL);
 	cfg_sync_flag = 1;
@@ -211,6 +134,7 @@ static void Dnl_ProcVelCalib(const VelCalib_t* VelCalib)
 
 static void Dnl_ProcMecCalib(const MecCalib_t* MecCalib)
 {
+	dnlMsgType |= MSG_TYPE_MEC_CALIB;
 	Calib_SetMec(&cfg.mec, MecCalib);
 	Cfg_SetFlag(CFG_FLAG_MEC);
 	cfg_sync_flag = 1;
@@ -218,6 +142,7 @@ static void Dnl_ProcMecCalib(const MecCalib_t* MecCalib)
 
 static void Dnl_ProcPosCalib(const PosCalib_t* PosCalib)
 {
+	dnlMsgType |= MSG_TYPE_POS_CALIB;
 	Calib_SetPos(&cfg.pos, PosCalib);
 	Cfg_SetFlag(CFG_FLAG_POS);
 	cfg_sync_flag = 1;
@@ -225,6 +150,7 @@ static void Dnl_ProcPosCalib(const PosCalib_t* PosCalib)
 
 static void Dnl_ProcPIDCalib(const PIDCalib_t* PIDCalib)
 {
+	dnlMsgType |= MSG_TYPE_PID_CALIB;
 	if (PIDCalib->type == PID_CALIB_TYPE_CHASSIS_VELOCITY) {
 		Calib_SetPID(&cfg.cvl, PIDCalib);
 		Cfg_SetFlag(CFG_FLAG_CVL);
@@ -241,13 +167,10 @@ static void Dnl_ProcPIDCalib(const PIDCalib_t* PIDCalib)
 		cfg_sync_flag = 1;
 	}
 }
-*/
 
 void Dnl_Init(void)
 {
 	FIFO_Init(&fifo, buf[0], DNL_BUF_SIZE);
-	//DBUS_Init(&dbus);
-	CBUS_Init(&cbus);
 }
 
 void Dnl_Proc(void)
@@ -267,46 +190,46 @@ void Dnl_Proc(void)
 		FIFO_Push(&fifo, buf[1], len);
 	}
 	// Check if any message received
-	if (Msg_Pop(&fifo, buf[1], &msg_head_kylin, &kylinMsg)) {
-		Dnl_ProcKylinMsg(&kylinMsg);
+	if (Msg_Pop(&fifo, buf[1], &msg_head_rcp, &dnlRcpMsg)) {
+		Dnl_ProcRcpMsg(&dnlRcpMsg);
 	}
-	if (Msg_Pop(&fifo, buf[1], &msg_head_vrc, &vrc)) {
-		Dnl_ProcVRC(&vrc);
+	if (Msg_Pop(&fifo, buf[1], &msg_head_hcp, &dnlHcpMsg)) {
+		Dnl_ProcHcpMsg(&dnlHcpMsg);
 	}
-	if (Msg_Pop(&fifo, buf[1], &msg_head_vhc, &vhc)) {
-		Dnl_ProcVHC(&vhc);
+	if (Msg_Pop(&fifo, buf[1], &msg_head_dbus, &dnlDBusMsg)) {
+		Dnl_ProcDBusMsg(&dnlDBusMsg);
 	}
-	if (Msg_Pop(&fifo, buf[1], &msg_head_vdbus, &vdbus)) {
-		Dnl_ProcVDBUS(&vdbus);
+	if (Msg_Pop(&fifo, buf[1], &msg_head_cbus, &dnlCBusMsg)) {
+		Dnl_ProcCBusMsg(&dnlCBusMsg);
 	}
-	if (Msg_Pop(&fifo, buf[1], &msg_head_vcbus, &cbus)) {
-		Dnl_ProcCBUS(&cbus);
+	if (Msg_Pop(&fifo, buf[1], &msg_head_kylin, &dnlKylinMsg)) {
+		Dnl_ProcKylinMsg(&dnlKylinMsg);
 	}
-	/*
-	else if (Msg_Pop(&fifo, buf[1], &msg_head_subsc, &subscMsg)) {
-		Dnl_ProcSubscMsg(&subscMsg);
-	} else if (Msg_Pop(&fifo, buf[1], &msg_head_calib, &calibMsg)) {
-		Dnl_ProcCalibMsg(&calibMsg);
-	} else if (Msg_Pop(&fifo, buf[1], &msg_head_kylin, &kylinMsg)) {
-		Dnl_ProcKylinMsg(&kylinMsg);
-		//LED_GREEN_TOG();
-	} else if (Msg_Pop(&fifo, buf[1], &msg_head_pid_calib, &pidCalib)) {
-		Dnl_ProcPIDCalib(&pidCalib);
-	} else if (Msg_Pop(&fifo, buf[1], &msg_head_imu_calib, &imuCalib)) {
-		Dnl_ProcIMUCalib(&imuCalib);
-	} else if (Msg_Pop(&fifo, buf[1], &msg_head_mag_calib, &magCalib)) {
-		Dnl_ProcMagCalib(&magCalib);
-	} else if (Msg_Pop(&fifo, buf[1], &msg_head_vel_calib, &velCalib)) {
-		Dnl_ProcVelCalib(&velCalib);
-	} else if (Msg_Pop(&fifo, buf[1], &msg_head_mec_calib, &mecCalib)) {
-		Dnl_ProcMecCalib(&mecCalib);
-	} else if (Msg_Pop(&fifo, buf[1], &msg_head_pos_calib, &posCalib)) {
-		Dnl_ProcPosCalib(&posCalib);
-	} else {
+	if (Msg_Pop(&fifo, buf[1], &msg_head_subsc, &dnlSubscMsg)) {
+		Dnl_ProcSubscMsg(&dnlSubscMsg);
 	}
-	*/
+	if (Msg_Pop(&fifo, buf[1], &msg_head_calib, &dnlCalibMsg)) {
+		Dnl_ProcCalibMsg(&dnlCalibMsg);
+	}
+	if (Msg_Pop(&fifo, buf[1], &msg_head_pid_calib, &dnlPIDCalib)) {
+		Dnl_ProcPIDCalib(&dnlPIDCalib);
+	}
+	if (Msg_Pop(&fifo, buf[1], &msg_head_imu_calib, &dnlIMUCalib)) {
+		Dnl_ProcIMUCalib(&dnlIMUCalib);
+	}
+	if (Msg_Pop(&fifo, buf[1], &msg_head_mag_calib, &dnlMagCalib)) {
+		Dnl_ProcMagCalib(&dnlMagCalib);
+	}
+	if (Msg_Pop(&fifo, buf[1], &msg_head_vel_calib, &dnlVelCalib)) {
+		Dnl_ProcVelCalib(&dnlVelCalib);
+	}
+	if (Msg_Pop(&fifo, buf[1], &msg_head_mec_calib, &dnlMecCalib)) {
+		Dnl_ProcMecCalib(&dnlMecCalib);
+	}
+	if (Msg_Pop(&fifo, buf[1], &msg_head_pos_calib, &dnlPosCalib)) {
+		Dnl_ProcPosCalib(&dnlPosCalib);
+	}
 }
-
 
 
 

@@ -17,19 +17,19 @@
 #include "dci.h"
 
 /*****************************************/
-/*        DBUS Control Interface         */
+/*        DBus Control Interface         */
 /*****************************************/
 
-DBUS_t dbus;
+DBus_t dbus;
 
 void Dci_Init(void)
 {
 	Rci_Init();
 	Hci_Init();
-	DBUS_Init(&dbus);
+	DBus_Init(&dbus);
 }
 
-void Dci_Proc(const DBUS_t* dbus)
+void Dci_Proc(const DBus_t* dbus)
 {
 	if (Cal_IsDone()) {
 		Rci_PreProc(&dbus->rcp);
@@ -48,7 +48,7 @@ void Dci_Proc(const DBUS_t* dbus)
 void Rcv_Proc(const uint8_t* dbuf)
 {
 	Wdg_Feed(WDG_IDX_RCV);
-	DBUS_Dec(&dbus, dbuf);
+	DBus_Dec(&dbus, dbuf);
 	Dci_Proc(&dbus);
 }
 

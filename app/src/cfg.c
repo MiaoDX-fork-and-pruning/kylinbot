@@ -103,6 +103,9 @@ void Cfg_Init(void)
 	if (!Cfg_GetFlag(CFG_FLAG_GPL)) {
 		memcpy(&cfg.gpl, &tmp.gpl, sizeof(PIDCfg_t));
 	}
+	if (!Cfg_GetFlag(CFG_FLAG_EPS)) {
+		memcpy(&cfg.eps, &tmp.eps, sizeof(EpsCfg_t));
+	}
 	cfg_sync_flag = 0;
 }
 

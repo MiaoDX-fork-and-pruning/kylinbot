@@ -29,6 +29,7 @@ extern "C" {
 #include "cal.h"
 #include "cmd.h"
 #include "odo.h"
+#include "ctl.h"
 #include "dci.h"
 #include "srs.h"
 #include "wdg.h"
@@ -37,6 +38,16 @@ extern "C" {
 #include "ios.h"
 
 #define UPL_BUF_SIZE 256u
+
+extern MsgType_t uplMsgType;
+
+extern RcpMsg_t uplRcpMsg;
+extern KylinMsg_t uplKylinMsg;
+extern SonarMsg_t uplSonarMsg;
+extern ZGyroMsg_t uplZGyroMsg;
+extern StatuMsg_t uplStatuMsg;
+extern PosCalibMsg_t uplPosCalibMsg;
+extern EpsCalibMsg_t uplEpsCalibMsg;
 
 void Upl_Init(void);
 void Upl_Proc(void);

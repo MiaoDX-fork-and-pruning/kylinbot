@@ -43,11 +43,12 @@ typedef uint32_t CalFlag_t;
 #define CAL_FLAG_GPEL       ((CalFlag_t)(1u << 1))
 #define CAL_FLAG_GPCH       ((CalFlag_t)(1u << 2))
 #define CAL_FLAG_GPCL       ((CalFlag_t)(1u << 3))
-
+#define CAL_FLAG_ODO        ((CalFlag_t)(1u << 4))
 #define CAL_FLAG_GPE (CAL_FLAG_GPEH | CAL_FLAG_GPEL)
 #define CAL_FLAG_GPC (CAL_FLAG_GPCH | CAL_FLAG_GPCL)
 #define CAL_FLAG_GIM (CAL_FLAG_GPE | CAL_FLAG_GPC)
-#define CAL_FLAG_ALL (CAL_FLAG_GIM)
+
+#define CAL_FLAG_ALL (CAL_FLAG_GIM | CAL_FLAG_ODO)
 
 void Cal_Init(void);
 void Cal_Proc(void);

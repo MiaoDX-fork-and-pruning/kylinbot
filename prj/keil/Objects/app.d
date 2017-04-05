@@ -93,6 +93,7 @@
 .\objects\app.o: ..\..\app\inc\cfg.h
 .\objects\app.o: ..\..\app\inc\fos.h
 .\objects\app.o: ..\..\app\inc\cmd.h
+.\objects\app.o: ..\..\app\inc\ctl.h
 .\objects\app.o: ..\..\app\inc\dci.h
 .\objects\app.o: ..\..\app\inc\rci.h
 .\objects\app.o: ..\..\app\inc\hci.h
@@ -104,7 +105,6 @@
 .\objects\app.o: ..\..\app\inc\ios.h
 .\objects\app.o: ..\..\app\inc\dnl.h
 .\objects\app.o: ..\..\app\inc\cci.h
-.\objects\app.o: ..\..\app\inc\ctl.h
 .\objects\app.o: ..\..\srv\inc\ext_srv.h
 .\objects\app.o: ..\..\srv\inc\rcv_srv.h
 .\objects\app.o: ..\..\app\inc\act.h

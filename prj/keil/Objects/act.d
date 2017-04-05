@@ -65,6 +65,7 @@
 .\objects\act.o: ..\..\app\inc\odo.h
 .\objects\act.o: ..\..\app\inc\can.h
 .\objects\act.o: ..\..\asp\inc\ekf.h
+.\objects\act.o: ..\..\asp\inc\maf.h
 .\objects\act.o: ..\..\app\inc\wdg.h
 .\objects\act.o: ..\..\asp\inc\pid.h
 .\objects\act.o: ..\..\asp\inc\rmp.h

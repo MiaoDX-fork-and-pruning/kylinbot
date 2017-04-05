@@ -160,6 +160,25 @@ typedef struct
 	float ch; // Calw position high, unit: rad
 }PosParam_t; // Position Parameters
 
+#define EPS_CALIB_VALUE_SCALE 1e3f
+typedef struct
+{
+	uint16_t x; // Position x epsilon, unit: mm
+	uint16_t y; // Position y epsilon, unit: mm
+	uint16_t z; // Position z epsilon, unit: 1e-3rad
+	uint16_t e; // Position e epsilon, unit: mm
+	uint16_t c; // Position c epsilon, unit: 1e-3rad
+}EpsCalib_t;
+
+typedef struct
+{
+	float x; // Position x epsilon, unit: m
+	float y; // Position y epsilon, unit: m
+	float z; // Position z epsilon, unit: rad
+	float e; // Position e epsilon, unit: m
+	float c; // Position c epsilon, unit: rad
+}EpsParam_t;
+
 typedef struct
 {
 	PIDCalib_t cvl; // Chasis velocity loop calibration

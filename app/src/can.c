@@ -49,7 +49,8 @@ void Motor_Process(Motor_t* motor, uint32_t id, uint8_t* data)
 	motor->current_fdb = (data[2] << 8) | data[3];
 	motor->current_ref = (data[4] << 8) | data[5];
 	if (motor->frame_cnt < 2) {
-		Ekf_Init(&motor->rate_ekf, MOTOR_RATE_EKF_Q, MOTOR_RATE_EKF_R);
+		Maf_Init(&motor->rate_maf, motor->rate_buf, MOTOR_RATE_BUF_LEN);
+		//Ekf_Init(&motor->rate_ekf, MOTOR_RATE_EKF_Q, MOTOR_RATE_EKF_R);
 		Ekf_Init(&motor->angle_ekf, MOTOR_ANGLE_EKF_Q, MOTOR_ANGLE_EKF_R);
 	}
 	if (motor->frame_cnt < MOTOR_INIT_FRAME_CNT) {
@@ -66,8 +67,10 @@ void Motor_Process(Motor_t* motor, uint32_t id, uint8_t* data)
 	} else {
 		motor->rate_raw = motor->angle_diff;
 	}
-	Ekf_Proc(&motor->rate_ekf, motor->rate_raw);
-	motor->rate_filtered = (int32_t)motor->rate_ekf.e;
+	//Ekf_Proc(&motor->rate_ekf, motor->rate_raw);
+	//motor->rate_filtered = (int32_t)motor->rate_ekf.e;
+	Maf_Proc(&motor->rate_maf, motor->rate_raw);
+	motor->rate_filtered = motor->rate_maf.avg;
 	motor->rate_deg = MOTOR_RATE_DEG_RECIP * motor->rate_filtered;
 	motor->rate_rad = MOTOR_RATE_RAD_RECIP * motor->rate_filtered;
 	motor->angle_raw = (motor->angle_fdb[1] - motor->bias) + motor->round * MOTOR_ECD_MOD;
@@ -142,18 +145,5 @@ void Can_Proc(uint32_t id, uint8_t* data)
 	}
 }
 
-uint8_t Can_Ready(void)
-{
-	return ZGyro_Ready(&zgyro) && Motor_Ready(&motor[0]) && Motor_Ready(&motor[1])
-		&& Motor_Ready(&motor[2]) && Motor_Ready(&motor[3]) && Motor_Ready(&motor[5]);
-}
-
-void Can_Zero(void)
-{
-	uint8_t i = 0;
-	for (; i < 4; i++) {
-		Motor_Reset(&motor[i]);
-	}
-}
 
 

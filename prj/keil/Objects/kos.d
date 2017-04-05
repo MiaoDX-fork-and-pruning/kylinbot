@@ -94,6 +94,7 @@
 .\objects\kos.o: ..\..\app\inc\cfg.h
 .\objects\kos.o: ..\..\app\inc\fos.h
 .\objects\kos.o: ..\..\app\inc\cmd.h
+.\objects\kos.o: ..\..\app\inc\ctl.h
 .\objects\kos.o: ..\..\app\inc\dci.h
 .\objects\kos.o: ..\..\app\inc\rci.h
 .\objects\kos.o: ..\..\app\inc\hci.h
@@ -105,7 +106,6 @@
 .\objects\kos.o: ..\..\app\inc\ios.h
 .\objects\kos.o: ..\..\app\inc\dnl.h
 .\objects\kos.o: ..\..\app\inc\cci.h
-.\objects\kos.o: ..\..\app\inc\ctl.h
 .\objects\kos.o: ..\..\srv\inc\ext_srv.h
 .\objects\kos.o: ..\..\srv\inc\rcv_srv.h
 .\objects\kos.o: ..\..\app\inc\act.h

@@ -33,11 +33,11 @@ typedef struct
 {
 	Rcp_t rcp;
 	Hcp_t hcp;
-}DBUS_t; // RoboMasters DBUS protocol frame structure
+}DBus_t; // RoboMasters DBUS protocol frame structure
 
-void DBUS_Enc(const DBUS_t* dbus, uint8_t* buf);
-void DBUS_Dec(DBUS_t* dbus, const uint8_t* buf);
-void DBUS_Init(DBUS_t* dbus);
+void DBus_Enc(const DBus_t* dbus, uint8_t* buf);
+void DBus_Dec(DBus_t* dbus, const uint8_t* buf);
+void DBus_Init(DBus_t* dbus);
 
 #ifdef __cplusplus
 }

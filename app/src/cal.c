@@ -124,9 +124,30 @@ static void Cal_ProcGim(void)
 	Cal_ProcGpc();
 }
 
+static void Cal_SetOdom(void)
+{
+	uint8_t i = 0;
+	for (; i < 4; i++) {
+		motor[i].bias = 0;
+		motor[i].round = 0;
+		Maf_Reset(&motor[i].rate_maf);
+		Ekf_Reset(&motor[i].angle_ekf);
+		//Ekf_Reset(&motor[i].rate_ekf);
+	}
+	Cal_SetFlag(CAL_FLAG_ODO);
+}
+
+static void Cal_ProcOdo(void)
+{
+	if (!Cal_HasFlag(CAL_FLAG_ODO)) {
+		Cal_SetOdom();
+	}
+}
+
 void Cal_Proc(void)
 {
 	Cal_ProcGim();
+	Cal_ProcOdo();
 }
 
 CalFlag_t Cal_GetFlag(void)

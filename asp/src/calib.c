@@ -128,5 +128,22 @@ void Calib_SetPos(PosParam_t* PosParam, const PosCalib_t* PosCalib)
 	PosParam->el = PosCalib->el / POS_CALIB_VALUE_SCALE;
 }
 
+void Calib_GetEps(EpsCalib_t* epsCalib, const EpsParam_t* epsParam)
+{
+	epsCalib->x = epsParam->x * EPS_CALIB_VALUE_SCALE;
+	epsCalib->y = epsParam->y * EPS_CALIB_VALUE_SCALE;
+	epsCalib->z = epsParam->z * EPS_CALIB_VALUE_SCALE;
+	epsCalib->e = epsParam->e * EPS_CALIB_VALUE_SCALE;
+	epsCalib->c = epsParam->c * EPS_CALIB_VALUE_SCALE;
+}
+
+void Calib_SetEps(EpsParam_t* epsParam, const EpsCalib_t* epsCalib)
+{
+	epsParam->x = epsCalib->x * EPS_CALIB_VALUE_SCALE;
+	epsParam->y = epsCalib->y * EPS_CALIB_VALUE_SCALE;
+	epsParam->z = epsCalib->z * EPS_CALIB_VALUE_SCALE;
+	epsParam->e = epsCalib->e * EPS_CALIB_VALUE_SCALE;
+	epsParam->c = epsCalib->c * EPS_CALIB_VALUE_SCALE;
+}
 
 

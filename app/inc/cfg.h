@@ -42,7 +42,8 @@ extern "C" {
 #define CFG_FLAG_CPL                (1u<<7)
 #define CFG_FLAG_GVL                (1u<<8)
 #define CFG_FLAG_GPL                (1u<<9)
-#define CFG_FLAG_ALL (CFG_FLAG_IMU|CFG_FLAG_MAG|CFG_FLAG_RMP|CFG_FLAG_VEL|CFG_FLAG_MEC|CFG_FLAG_POS|CFG_FLAG_CVL|CFG_FLAG_CPL|CFG_FLAG_GVL|CFG_FLAG_GPL)
+#define CFG_FLAG_EPS                (1u<<10)
+#define CFG_FLAG_ALL (CFG_FLAG_IMU|CFG_FLAG_MAG|CFG_FLAG_RMP|CFG_FLAG_VEL|CFG_FLAG_MEC|CFG_FLAG_POS|CFG_FLAG_CVL|CFG_FLAG_CPL|CFG_FLAG_GVL|CFG_FLAG_GPL|CFG_FLAG_EPS)
 
 #pragma pack(1)
 
@@ -55,6 +56,7 @@ typedef PIDParam_t PIDCfg_t;
 typedef VelParam_t VelCfg_t;
 typedef MecParam_t MecCfg_t;
 typedef PosParam_t PosCfg_t;
+typedef EpsParam_t EpsCfg_t;
 
 typedef struct
 {
@@ -75,6 +77,7 @@ typedef struct
 	PIDCfg_t cpl; // Chasis position loop
 	PIDCfg_t gvl; // Gimbal velocity loop
 	PIDCfg_t gpl; // Gimbal position loop
+	EpsCfg_t eps; // Position error epsilon
 }Cfg_t; // Application Configuration
 
 #pragma pack()
@@ -202,6 +205,20 @@ typedef struct
 	.Omax = 1000, \
 }
 
+#define EPX_CFG_DEF 0.1f
+#define EPY_CFG_DEF 0.1f
+#define EPZ_CFG_DEF 0.1f
+#define EPE_CFG_DEF 0.1f
+#define EPC_CFG_DEF 0.1f
+#define EPS_CFG_DEF \
+{ \
+	.x = EPX_CFG_DEF, \
+	.y = EPY_CFG_DEF, \
+	.z = EPZ_CFG_DEF, \
+	.e = EPE_CFG_DEF, \
+	.c = EPC_CFG_DEF, \
+}
+
 #define CFG_DEF \
 { \
 	CFG_VER_DEF, \
@@ -216,6 +233,7 @@ typedef struct
 	CPL_CFG_DEF, \
 	GVL_CFG_DEF, \
 	GPL_CFG_DEF, \
+	EPS_CFG_DEF, \
 }
 
 CfgVer_t Cfg_GetVer(void);

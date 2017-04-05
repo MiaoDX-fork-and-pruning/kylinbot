@@ -38,12 +38,4 @@ void Cmd_Proc(void)
 	Mec_Decomp((float*)&cmd.cp, (float*)&cmd.mp);
 }
 
-void Cmd_Zero(void)
-{
-	memset(&cmd.cp, 0, sizeof(ChassisState_t));
-	memset(&cmd.cv, 0, sizeof(ChassisState_t));
-	memset(&cmd.mp, 0, sizeof(MecanumState_t));
-	memset(&cmd.mv, 0, sizeof(MecanumState_t));
-}
-
 

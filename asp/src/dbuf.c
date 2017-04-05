@@ -22,7 +22,7 @@ void DBuf_Init(DBuf_t* dbuf)
 	Hcf_Init(&dbuf->hcf);
 }
 
-void DBuf_Proc(DBuf_t* dbuf, const DBUS_t* dbus)
+void DBuf_Proc(DBuf_t* dbuf, const DBus_t* dbus)
 {
 	Rcf_Proc(&dbuf->rcf, &dbus->rcp);
 	Hcf_Proc(&dbuf->hcf, &dbus->hcp);

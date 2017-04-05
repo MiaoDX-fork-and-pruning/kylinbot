@@ -16,19 +16,19 @@
  
 #include "dbus.h"
 
-void DBUS_Enc(const DBUS_t* dbus, uint8_t* buf)
+void DBus_Enc(const DBus_t* dbus, uint8_t* buf)
 {
 	Rcp_Enc(&dbus->rcp, buf);
 	Hcp_Enc(&dbus->hcp, buf + HCP_OFFSET);
 }
 
-void DBUS_Dec(DBUS_t* dbus, const uint8_t* buf)
+void DBus_Dec(DBus_t* dbus, const uint8_t* buf)
 {
 	Rcp_Dec(&dbus->rcp, buf);
 	Hcp_Dec(&dbus->hcp, buf + HCP_OFFSET);
 }
 
-void DBUS_Init(DBUS_t* dbus)
+void DBus_Init(DBus_t* dbus)
 {
 	Rcp_Init(&dbus->rcp);
 	Hcp_Init(&dbus->hcp);

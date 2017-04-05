@@ -43,7 +43,6 @@ typedef struct
 
 void Cmd_Init(void);
 void Cmd_Proc(void);
-void Cmd_Zero(void);
 
 extern Cmd_t cmd;
 
