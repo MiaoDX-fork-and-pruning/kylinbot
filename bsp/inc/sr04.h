@@ -71,6 +71,9 @@ typedef struct
 #define SR04_NVIC_PRE_PRIORITY 1
 #define SR04_NVIC_SUB_PRIORITY 0
 
+#define SR04_TRIGGER_FALLING 0
+#define SR04_TRIGGER_RISING  1
+
 void SR04_Bind(const SR04_t* sr04);
 
 void SR04_Config(void);

@@ -37,7 +37,6 @@ void Srs_Proc(void)
 		if (srs[sri].state == SR04_STATE_IDLE) {
 			uint32_t interval = Clk_GetUsTick() - srs[sri].endEcho;
 			if (interval > SR04_TRIG_TUS) {
-				
 				GPIO_RST(sr04[i].trigPin);
 				GPIO_SET(sr04[i].trigPin);
 				srs[sri].startTrig = Clk_GetUsTick();
@@ -76,12 +75,12 @@ void Sr04_Proc(uint8_t i, uint8_t trigger)
 	}
 	if (i < SR04_NUM) {
 		// Rising edge trigger -> start echo
-		if (trigger == 1) {
+		if (trigger == SR04_TRIGGER_RISING) {
 			srs[i].startEcho = Clk_GetUsTick();
 			srs[i].state = SR04_STATE_ECHO;
 		}
 		// Falling edge trigger -> end echo
-		else if (trigger == 0) {
+		else if (trigger == SR04_TRIGGER_FALLING) {
 			srs[i].frame_cnt++;
 			srs[i].endEcho = Clk_GetUsTick();
 			srs[i].echo = srs[i].endEcho - srs[i].startEcho;

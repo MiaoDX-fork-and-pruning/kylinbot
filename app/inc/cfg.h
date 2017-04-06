@@ -42,8 +42,10 @@ extern "C" {
 #define CFG_FLAG_CPL                (1u<<7)
 #define CFG_FLAG_GVL                (1u<<8)
 #define CFG_FLAG_GPL                (1u<<9)
-#define CFG_FLAG_EPS                (1u<<10)
-#define CFG_FLAG_ALL (CFG_FLAG_IMU|CFG_FLAG_MAG|CFG_FLAG_RMP|CFG_FLAG_VEL|CFG_FLAG_MEC|CFG_FLAG_POS|CFG_FLAG_CVL|CFG_FLAG_CPL|CFG_FLAG_GVL|CFG_FLAG_GPL|CFG_FLAG_EPS)
+#define CFG_FLAG_DPI                (1u<<10)
+#define CFG_FLAG_EPS                (1u<<11)
+	
+#define CFG_FLAG_ALL (CFG_FLAG_IMU|CFG_FLAG_MAG|CFG_FLAG_RMP|CFG_FLAG_VEL|CFG_FLAG_MEC|CFG_FLAG_POS|CFG_FLAG_CVL|CFG_FLAG_CPL|CFG_FLAG_GVL|CFG_FLAG_GPL|CFG_FLAG_DPI|CFG_FLAG_EPS)
 
 #pragma pack(1)
 
@@ -57,6 +59,7 @@ typedef VelParam_t VelCfg_t;
 typedef MecParam_t MecCfg_t;
 typedef PosParam_t PosCfg_t;
 typedef EpsParam_t EpsCfg_t;
+typedef EpsParam_t DpiCfg_t;
 
 typedef struct
 {
@@ -77,6 +80,7 @@ typedef struct
 	PIDCfg_t cpl; // Chasis position loop
 	PIDCfg_t gvl; // Gimbal velocity loop
 	PIDCfg_t gpl; // Gimbal position loop
+	DpiCfg_t dpi; // DPI 
 	EpsCfg_t eps; // Position error epsilon
 }Cfg_t; // Application Configuration
 
@@ -205,6 +209,20 @@ typedef struct
 	.Omax = 1000, \
 }
 
+#define DPX_CFG_DEF 0.1f
+#define DPY_CFG_DEF 0.1f
+#define DPZ_CFG_DEF 0.1f
+#define DPE_CFG_DEF 0.1f
+#define DPC_CFG_DEF 0.1f
+#define DPI_CFG_DEF \
+{ \
+	.x = DPX_CFG_DEF, \
+	.y = DPY_CFG_DEF, \
+	.z = DPZ_CFG_DEF, \
+	.e = DPE_CFG_DEF, \
+	.c = DPC_CFG_DEF, \
+}
+
 #define EPX_CFG_DEF 0.1f
 #define EPY_CFG_DEF 0.1f
 #define EPZ_CFG_DEF 0.1f
@@ -233,6 +251,7 @@ typedef struct
 	CPL_CFG_DEF, \
 	GVL_CFG_DEF, \
 	GPL_CFG_DEF, \
+	DPI_CFG_DEF, \
 	EPS_CFG_DEF, \
 }
 

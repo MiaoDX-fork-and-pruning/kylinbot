@@ -42,6 +42,7 @@ MagCalib_t dnlMagCalib;
 VelCalib_t dnlVelCalib;
 MecCalib_t dnlMecCalib;
 PosCalib_t dnlPosCalib;
+EpsCalib_t dnlEpsCalib;
 
 static uint8_t buf[2][DNL_BUF_SIZE];
 static FIFO_t fifo;
@@ -168,6 +169,13 @@ static void Dnl_ProcPIDCalib(const PIDCalib_t* PIDCalib)
 	}
 }
 
+static void Dnl_ProcEpsCalib(const EpsCalib_t* epsCalib)
+{
+	dnlMsgType |= MSG_TYPE_EPS_CALIB;
+	Calib_SetEps(&cfg.eps, epsCalib);
+	cfg_sync_flag = 1;
+}
+
 void Dnl_Init(void)
 {
 	FIFO_Init(&fifo, buf[0], DNL_BUF_SIZE);
@@ -228,6 +236,9 @@ void Dnl_Proc(void)
 	}
 	if (Msg_Pop(&fifo, buf[1], &msg_head_pos_calib, &dnlPosCalib)) {
 		Dnl_ProcPosCalib(&dnlPosCalib);
+	}
+	if (Msg_Pop(&fifo, buf[1], &msg_head_eps_calib, &dnlEpsCalib)) {
+		Dnl_ProcEpsCalib(&dnlEpsCalib);
 	}
 }
 

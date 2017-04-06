@@ -28,7 +28,54 @@ extern "C" {
 #include <stdint.h>
 
 #pragma pack(1)
-	
+
+#define CHA_CALIB_VALUE_SCALE 1e3f
+typedef struct
+{
+	uint16_t x; // Chasis state calibration in x-axis
+	uint16_t y; // Chasis state calibration in y-axis
+	uint16_t z; // Chasis state calibration in z-axis
+}ChaCalib_t;
+
+typedef struct
+{
+	float x; // Chasis state parameters in x-axis
+	float y; // Chasis state parameters in y-axis
+	float z; // Chasis state parameters in z-axis
+}ChaParam_t;
+
+#define GIM_CALIB_VALUE_SCALE 1e3f
+typedef struct
+{
+	uint16_t e; // Gimbal state calibration in e-axis
+	uint16_t c; // Gimbal state calibration in c-axis
+}GimCalib_t;
+
+typedef struct
+{
+	float e; // Gimbal state parameters in e-axis
+	float c; // Gimbal state parameters in c-axis
+}GimParam_t;
+
+#define SYS_CALIB_VALUE_SCALE 1e3f
+typedef struct
+{
+	uint16_t x; // System state calibration in x-axis
+	uint16_t y; // System state calibration in y-axis
+	uint16_t z; // System state calibration in z-axis
+	uint16_t e; // System state calibration in e-axis
+	uint16_t c; // System state calibration in c-axis
+}SysCalib_t;
+
+typedef struct
+{
+	float x; // System param calibration in x-axis
+	float y; // System param calibration in y-axis
+	float z; // System param calibration in z-axis
+	float e; // System param calibration in e-axis
+	float c; // System param calibration in c-axis
+}SysParam_t;
+
 #define PID_CALIB_TYPE_CHASSIS_VELOCITY 0x01
 #define PID_CALIB_TYPE_GRABBER_VELOCITY 0x02
 #define PID_CALIB_TYPE_GRABBER_POSITION 0x03
@@ -179,6 +226,25 @@ typedef struct
 	float c; // Position c epsilon, unit: rad
 }EpsParam_t;
 
+#define DPI_CALIB_VALUE_SCALE 1e3f
+typedef struct
+{
+	uint16_t x; // Position x dpi, unit: mm
+	uint16_t y; // Position y dpi, unit: mm
+	uint16_t z; // Position z dpi, unit: 1e-3rad
+	uint16_t e; // Position e dpi, unit: mm
+	uint16_t c; // Position c dpi, unit: 1e-3rad
+}DpiCalib_t;
+
+typedef struct
+{
+	float x; // Position x dpi, unit: m
+	float y; // Position y dpi, unit: m
+	float z; // Position z dpi, unit: rad
+	float e; // Position e dpi, unit: m
+	float c; // Position c dpi, unit: rad
+}DpiParam_t;
+
 typedef struct
 {
 	PIDCalib_t cvl; // Chasis velocity loop calibration
@@ -188,6 +254,7 @@ typedef struct
 	MagCalib_t mag; // Mag offset calibration
 	MecCalib_t mec; // Mecanum wheel calibration
 	PosCalib_t pos; // Position limit calibration
+	EpsCalib_t eps; // Epsilon calibration
 }Calib_t; // Calibration
 
 typedef struct
@@ -195,10 +262,11 @@ typedef struct
 	PIDParam_t cvl; // Chasis velocity loop parameters
 	PIDParam_t gvl; // Gimbal velocity loop parameters
 	PIDParam_t gpl; // Chasis position loop parameters
-	IMUParam_t imu; // IMU calibration
-	MagParam_t mag; // Mag calibration
-	MecParam_t mec; // Mecanum wheel calibration
-	PosParam_t pos; // Position calibration
+	IMUParam_t imu; // IMU parameters
+	MagParam_t mag; // Mag parameters
+	MecParam_t mec; // Mecanum wheel parameters
+	PosParam_t pos; // Position parameters
+	EpsParam_t eps; // Epsilon parameters
 }Param_t; // Parameters
 
 #pragma pack()
@@ -215,6 +283,8 @@ void Calib_GetMec(MecCalib_t* MecCalib, const MecParam_t* MecParam);
 void Calib_SetMec(MecParam_t* MecParam, const MecCalib_t* MecCalib);
 void Calib_GetPos(PosCalib_t* PosCalib, const PosParam_t* PosParam);
 void Calib_SetPos(PosParam_t* PosParam, const PosCalib_t* PosCalib);
+void Calib_GetEps(EpsCalib_t* epsCalib, const EpsParam_t* epsParam);
+void Calib_SetEps(EpsParam_t* epsParam, const EpsCalib_t* epsCalib);
 
 #ifdef __cplusplus
 }

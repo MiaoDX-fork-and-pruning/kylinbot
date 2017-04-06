@@ -29,11 +29,11 @@ static void SR04_IRQHandler(uint8_t num)
 			if (EXTI->RTSR & tmp) {
 				EXTI->RTSR &= ~tmp;
 				EXTI->FTSR |= tmp;
-				trigger = 1;
+				trigger = SR04_TRIGGER_RISING;
 			} else if (EXTI->FTSR & tmp) {
 				EXTI->FTSR &= ~tmp;
 				EXTI->RTSR |= tmp;
-				trigger = 0;
+				trigger = SR04_TRIGGER_FALLING;
 			}
 			SR04Callback(i, trigger);
 		}

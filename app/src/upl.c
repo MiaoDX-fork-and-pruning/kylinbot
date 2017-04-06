@@ -97,6 +97,17 @@ static void Upl_PushPosCalib(void)
 	Msg_Push(&fifo, buf[1], &msg_head_pos_calib, &uplPosCalibMsg);
 }
 
+static void Upl_PushEpsCalib(void)
+{
+	uplEpsCalibMsg.frame_id++;
+	uplEpsCalibMsg.data.x = cfg.eps.x * EPS_CALIB_VALUE_SCALE;
+	uplEpsCalibMsg.data.y = cfg.eps.y * EPS_CALIB_VALUE_SCALE;
+	uplEpsCalibMsg.data.z = cfg.eps.z * EPS_CALIB_VALUE_SCALE;
+	uplEpsCalibMsg.data.e = cfg.eps.e * EPS_CALIB_VALUE_SCALE;
+	uplEpsCalibMsg.data.c = cfg.eps.c * EPS_CALIB_VALUE_SCALE;
+	Msg_Push(&fifo, buf[1], &msg_head_eps_calib, &uplEpsCalibMsg);
+}
+
 static void Upl_SendMsg(void)
 {
 	uint8_t data;
@@ -125,6 +136,13 @@ void Upl_Proc(void)
 			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_kylin.attr.length + MSG_LEN_EXT) {
 				Upl_PushKylinMsg();
 				Upl_SendMsg();
+				uplMsgType = MSG_TYPE_STATU;
+			}
+			break;
+		case MSG_TYPE_STATU:
+			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_statu.attr.length + MSG_LEN_EXT) {
+				Upl_PushStatuMsg();
+				Upl_SendMsg();
 				uplMsgType = MSG_TYPE_SONAR;
 			}
 			break;
@@ -146,11 +164,18 @@ void Upl_Proc(void)
 			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_pos_calib.attr.length + MSG_LEN_EXT) {
 				Upl_PushPosCalib();
 				Upl_SendMsg();
+				uplMsgType = MSG_TYPE_EPS_CALIB;
+			}
+			break;
+		case MSG_TYPE_EPS_CALIB:
+			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_eps_calib.attr.length + MSG_LEN_EXT) {
+				Upl_PushEpsCalib();
+				Upl_SendMsg();
 				uplMsgType = MSG_TYPE_RCP;
 			}
 			break;
 		default:
-			uplMsgType = MSG_TYPE_KYLIN;
+			uplMsgType = MSG_TYPE_RCP;
 		break;
 	}
 }

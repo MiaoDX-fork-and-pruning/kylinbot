@@ -28,11 +28,15 @@ void Cmd_Init(void)
 
 void Cmd_Proc(void)
 {
-	LIMIT(cmd.cv.x, -cfg.vel.x, cfg.vel.x);
-	LIMIT(cmd.cv.y, -cfg.vel.y, cfg.vel.y);
-	LIMIT(cmd.cv.z, -cfg.vel.z, cfg.vel.z);
+	LIMIT_ABS(cmd.cv.x, cfg.vel.x);
+	LIMIT_ABS(cmd.cv.y, cfg.vel.y);
+	LIMIT_ABS(cmd.cv.z, cfg.vel.z);
 	LIMIT(cmd.gp.e, cfg.pos.el, cfg.pos.eh);
 	LIMIT(cmd.gp.c, cfg.pos.cl, cfg.pos.ch);
+	
+	//cmd.cp.x += cmd.cv.x * SYS_CTL_TSC;
+	//cmd.cp.y += cmd.cv.y * SYS_CTL_TSC;
+	//cmd.cp.z += cmd.cv.z * SYS_CTL_TSC;
 	
 	Mec_Decomp((float*)&cmd.cv, (float*)&cmd.mv);
 	Mec_Decomp((float*)&cmd.cp, (float*)&cmd.mp);

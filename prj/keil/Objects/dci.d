@@ -37,17 +37,13 @@
 .\objects\dci.o: ..\..\stl\StdPeriph_Driver\inc\misc.h
 .\objects\dci.o: ..\..\stl\StdPeriph_Driver\inc\stm32f4xx_can.h
 .\objects\dci.o: ..\..\asp\inc\mecanum.h
-.\objects\dci.o: ..\..\app\inc\hci.h
-.\objects\dci.o: ..\..\asp\inc\hcf.h
-.\objects\dci.o: ..\..\asp\inc\maf.h
-.\objects\dci.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\dci.o: ..\..\app\inc\wdg.h
-.\objects\dci.o: ..\..\app\inc\cal.h
+.\objects\dci.o: ..\..\app\inc\odo.h
 .\objects\dci.o: ..\..\bsp\inc\bsp.h
 .\objects\dci.o: ..\..\bsp\inc\beep.h
 .\objects\dci.o: ..\..\bsp\inc\stm32util.h
 .\objects\dci.o: ..\..\bsp\inc\btm.h
 .\objects\dci.o: ..\..\asp\inc\fifo.h
+.\objects\dci.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\dci.o: ..\..\hal\inc\hal_uart.h
 .\objects\dci.o: ..\..\bsp\inc\btn.h
 .\objects\dci.o: ..\..\bsp\inc\can1.h
@@ -67,10 +63,14 @@
 .\objects\dci.o: ..\..\bsp\inc\sr04.h
 .\objects\dci.o: ..\..\bsp\inc\tim.h
 .\objects\dci.o: ..\..\bsp\inc\tty.h
+.\objects\dci.o: ..\..\app\inc\can.h
+.\objects\dci.o: ..\..\asp\inc\ekf.h
+.\objects\dci.o: ..\..\asp\inc\maf.h
+.\objects\dci.o: ..\..\app\inc\wdg.h
+.\objects\dci.o: ..\..\app\inc\hci.h
+.\objects\dci.o: ..\..\asp\inc\hcf.h
+.\objects\dci.o: ..\..\app\inc\cal.h
 .\objects\dci.o: ..\..\drv\inc\drv.h
 .\objects\dci.o: ..\..\drv\inc\delay.h
 .\objects\dci.o: ..\..\drv\inc\motor.h
 .\objects\dci.o: ..\..\drv\inc\zgyro.h
-.\objects\dci.o: ..\..\app\inc\odo.h
-.\objects\dci.o: ..\..\app\inc\can.h
-.\objects\dci.o: ..\..\asp\inc\ekf.h

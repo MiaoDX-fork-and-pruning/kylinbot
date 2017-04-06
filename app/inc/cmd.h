@@ -28,6 +28,7 @@ extern "C" {
 #include "sys.h"
 #include "mec.h"
 #include "cfg.h"
+#include "odo.h"
 #include "fun.h"
 
 typedef struct

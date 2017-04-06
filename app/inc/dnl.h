@@ -55,8 +55,7 @@ extern MagCalib_t dnlMagCalib;
 extern VelCalib_t dnlVelCalib;
 extern MecCalib_t dnlMecCalib;
 extern PosCalib_t dnlPosCalib;
-
-
+extern EpsCalib_t dnlEpsCalib;
 
 #ifdef __cplusplus
 }
