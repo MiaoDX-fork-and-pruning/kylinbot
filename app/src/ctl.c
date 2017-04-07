@@ -36,6 +36,10 @@ static void PeriphsStateCtl(void)
 
 static void ChassisStateCtl(void)
 {
+	ctl.cp.x = cmd.cp.x - odo.cp.x;
+	ctl.cp.y = cmd.cp.x - odo.cp.x;
+	ctl.cp.z = cmd.cp.x - odo.cp.x;
+	
 	ctl.cv.x = PID_Calc(&pid.cp.x, cmd.cp.x, odo.cp.x);
 	ctl.cv.y = PID_Calc(&pid.cp.y, cmd.cp.y, odo.cp.y);
 	ctl.cv.z = PID_Calc(&pid.cp.z, cmd.cp.z, odo.cp.z);
@@ -49,6 +53,9 @@ static void ChassisStateCtl(void)
 
 static void GrabberStateCtl(void)
 {
+	ctl.gp.e = cmd.gp.e - odo.gp.e;
+	ctl.gp.c = cmd.gp.c - odo.gp.c;
+	
 	ctl.gv.e = PID_Calc(&pid.gp.e, cmd.gp.e, odo.gp.e);
 	ctl.gc.e = PID_Calc(&pid.gv.e, ctl.gv.e, odo.gv.e);
 	ctl.gc.c = map(cmd.gp.c, cfg.pos.cl, cfg.pos.ch, CLAW_PWM_L, CLAW_PWM_H); // Direct PWM control (1000~2000)/2500, map rad to pwm duty cycle

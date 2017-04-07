@@ -30,10 +30,12 @@ extern "C" {
 
 typedef uint32_t PeriphsState_t; // Peripherals state flag bits
 
-#define FS_KEY_H        (((uint32_t)1u)<<0)
-#define FS_KEY_L        (((uint32_t)1u)<<1)
-#define FS_LED_RED      (((uint32_t)1u)<<2)
-#define FS_LED_GREEN    (((uint32_t)1u)<<3)
+#define FS_CTL_ABS_MOD  (1u<<30)
+
+#define FS_KEY_H        (1u<<0)
+#define FS_KEY_L        (1u<<1)
+#define FS_LED_RED      (1u<<2)
+#define FS_LED_GREEN    (1u<<3)
 
 #define FS_ALL      		(FS_KEY_H|FS_KEY_L|FS_LED_RED|FS_LED_GREEN)
 #define FS_NON       		((uint32_t)0)
