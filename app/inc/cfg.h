@@ -216,10 +216,10 @@ typedef struct
 	.Omax = 1000, \
 }
 
-#define DPX_CFG_DEF 0.1f
-#define DPY_CFG_DEF 0.1f
+#define DPX_CFG_DEF 0.2f
+#define DPY_CFG_DEF 0.2f
 #define DPZ_CFG_DEF 0.1f
-#define DPE_CFG_DEF 0.1f
+#define DPE_CFG_DEF 0.2f
 #define DPC_CFG_DEF 0.1f
 #define DPI_CFG_DEF \
 { \

@@ -57,13 +57,13 @@ static void GetMecanumCurrentsFdb(void)
 static void GetChassisPositionFdb(void)
 {
 	Mec_Synthe((float*)&odo.mp, (float*)&odo.cp);
-	//odo.cp.z = -zgyro.angle_rad;
+	odo.cp.z = zgyro.angle_rad;
 }
 
 static void GetChassisVelocityFdb(void)
 {
 	Mec_Synthe((float*)&odo.mv, (float*)&odo.cv);
-	//odo.cv.z = -zgyro.rate_rad;
+	odo.cv.z = zgyro.rate_rad;
 }
 
 static float odo_gp_c = 0;
