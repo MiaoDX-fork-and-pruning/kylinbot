@@ -28,13 +28,13 @@ void ZGyro_Process(ZGyro_t* zgyro, uint32_t id, uint8_t* data)
 	zgyro->id = id;
 	zgyro->frame_cnt++;
 	zgyro->angle_fdb[0] = zgyro->angle_fdb[1];
-	zgyro->angle_fdb[1] = ((int32_t)(data[0]<<24)|(int32_t)(data[1]<<16)|(int32_t)(data[2]<<8)|(int32_t)(data[3]));
+	zgyro->angle_fdb[1] = ZGYRO_ORIENTATION * ((int32_t)(data[0]<<24)|(int32_t)(data[1]<<16)|(int32_t)(data[2]<<8)|(int32_t)(data[3]));
 	if (zgyro->frame_cnt < ZGYRO_INIT_FRAME_CNT) {
 		zgyro->bias = zgyro->angle_fdb[1];
 	}
 	zgyro->rate = zgyro->angle_fdb[1] - zgyro->angle_fdb[0];
 	zgyro->rate_deg = ZGYRO_RATE_DEG_RECIP * zgyro->rate;
-	zgyro->rate_rad = DEG2RAD_RECIP * zgyro->rate;
+	zgyro->rate_rad = ZGYRO_RATE_RAD_RECIP * zgyro->rate;
 	zgyro->angle = zgyro->angle_fdb[1] - zgyro->bias;
 	zgyro->angle_deg = ZGYRO_ANGLE_DEG_RECIP * zgyro->angle;
 	zgyro->angle_rad = ZGYRO_ANGLE_RAD_RECIP * zgyro->angle;
