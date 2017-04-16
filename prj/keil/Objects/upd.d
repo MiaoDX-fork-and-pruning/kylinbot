@@ -66,7 +66,13 @@
 .\objects\upd.o: ..\..\app\inc\odo.h
 .\objects\upd.o: ..\..\app\inc\mec.h
 .\objects\upd.o: ..\..\app\inc\cfg.h
+.\objects\upd.o: ..\..\asp\inc\msg.h
+.\objects\upd.o: ..\..\asp\inc\cbus.h
+.\objects\upd.o: ..\..\asp\inc\dbus.h
+.\objects\upd.o: ..\..\asp\inc\rcp.h
+.\objects\upd.o: ..\..\asp\inc\hcp.h
 .\objects\upd.o: ..\..\asp\inc\calib.h
+.\objects\upd.o: ..\..\asp\inc\crc16.h
 .\objects\upd.o: ..\..\app\inc\fos.h
 .\objects\upd.o: ..\..\asp\inc\mecanum.h
 .\objects\upd.o: ..\..\app\inc\ctl.h

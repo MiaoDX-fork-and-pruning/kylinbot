@@ -56,7 +56,13 @@
 .\objects\odo.o: ..\..\app\inc\wdg.h
 .\objects\odo.o: ..\..\app\inc\mec.h
 .\objects\odo.o: ..\..\app\inc\cfg.h
+.\objects\odo.o: ..\..\asp\inc\msg.h
+.\objects\odo.o: ..\..\asp\inc\cbus.h
+.\objects\odo.o: ..\..\asp\inc\dbus.h
+.\objects\odo.o: ..\..\asp\inc\rcp.h
+.\objects\odo.o: ..\..\asp\inc\hcp.h
 .\objects\odo.o: ..\..\asp\inc\calib.h
+.\objects\odo.o: ..\..\asp\inc\crc16.h
 .\objects\odo.o: ..\..\app\inc\fos.h
 .\objects\odo.o: ..\..\drv\inc\flash.h
 .\objects\odo.o: ..\..\asp\inc\mecanum.h

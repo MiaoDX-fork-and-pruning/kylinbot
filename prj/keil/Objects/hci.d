@@ -11,7 +11,13 @@
 .\objects\hci.o: ..\..\asp\inc\fun.h
 .\objects\hci.o: ..\..\app\inc\mec.h
 .\objects\hci.o: ..\..\app\inc\cfg.h
+.\objects\hci.o: ..\..\asp\inc\msg.h
+.\objects\hci.o: ..\..\asp\inc\cbus.h
+.\objects\hci.o: ..\..\asp\inc\dbus.h
+.\objects\hci.o: ..\..\asp\inc\rcp.h
+.\objects\hci.o: ..\..\asp\inc\fifo.h
 .\objects\hci.o: ..\..\asp\inc\calib.h
+.\objects\hci.o: ..\..\asp\inc\crc16.h
 .\objects\hci.o: ..\..\app\inc\fos.h
 .\objects\hci.o: ..\..\drv\inc\flash.h
 .\objects\hci.o: ..\..\bsp\inc\platform.h
@@ -41,7 +47,6 @@
 .\objects\hci.o: ..\..\bsp\inc\beep.h
 .\objects\hci.o: ..\..\bsp\inc\stm32util.h
 .\objects\hci.o: ..\..\bsp\inc\btm.h
-.\objects\hci.o: ..\..\asp\inc\fifo.h
 .\objects\hci.o: ..\..\hal\inc\hal_uart.h
 .\objects\hci.o: ..\..\bsp\inc\btn.h
 .\objects\hci.o: ..\..\bsp\inc\can1.h

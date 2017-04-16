@@ -2,7 +2,15 @@
 .\objects\cfg.o: ..\..\app\inc\cfg.h
 .\objects\cfg.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\cfg.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\cfg.o: ..\..\asp\inc\msg.h
+.\objects\cfg.o: ..\..\asp\inc\cbus.h
+.\objects\cfg.o: ..\..\asp\inc\dbus.h
+.\objects\cfg.o: ..\..\asp\inc\rcp.h
+.\objects\cfg.o: ..\..\asp\inc\hcp.h
+.\objects\cfg.o: ..\..\asp\inc\fifo.h
+.\objects\cfg.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\cfg.o: ..\..\asp\inc\calib.h
+.\objects\cfg.o: ..\..\asp\inc\crc16.h
 .\objects\cfg.o: ..\..\app\inc\fos.h
 .\objects\cfg.o: ..\..\drv\inc\flash.h
 .\objects\cfg.o: ..\..\bsp\inc\platform.h

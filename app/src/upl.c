@@ -23,12 +23,17 @@
 MsgType_t uplMsgType = MSG_TYPE_RCP;
 
 RcpMsg_t uplRcpMsg;
+
 KylinMsg_t uplKylinMsg;
-SonarMsg_t uplSonarMsg;
 ZGyroMsg_t uplZGyroMsg;
+SonarMsg_t uplSonarMsg;
 StatuMsg_t uplStatuMsg;
+SubscMsg_t uplSubscMsg;
+
 PosCalibMsg_t uplPosCalibMsg;
+DpiCalibMsg_t uplDpiCalibMsg;
 EpsCalibMsg_t uplEpsCalibMsg;
+ComCalibMsg_t uplComCalibMsg;
 
 static uint8_t buf[2][UPL_BUF_SIZE];
 static FIFO_t fifo;
@@ -61,7 +66,7 @@ static void Upl_PushKylinMsg(void)
 	Msg_Push(&fifo, buf[1], &msg_head_kylin, &uplKylinMsg);
 }
 
-static void Upl_PushSr04sMsg(void)
+static void Upl_PushSonarMsg(void)
 {
 	uint8_t i = 0;
 	uplSonarMsg.frame_id++;
@@ -87,7 +92,15 @@ static void Upl_PushStatuMsg(void)
 	Msg_Push(&fifo, buf[1], &msg_head_statu, &uplStatuMsg);
 }
 
-static void Upl_PushPosCalib(void)
+static void Upl_PushSubscMsg(void)
+{
+	uplSubscMsg.frame_id++;
+	// TODO
+	uplSubscMsg.msg_type = cfg.com.msg_type;
+	Msg_Push(&fifo, buf[1], &msg_head_subsc, &uplSubscMsg);
+}
+
+static void Upl_PushPosCalibMsg(void)
 {
 	uplPosCalibMsg.frame_id++;
 	uplPosCalibMsg.data.ch = map(CLAW_PWM_H, 1000, 2000, 0, PI) * POS_CALIB_VALUE_SCALE;
@@ -97,7 +110,18 @@ static void Upl_PushPosCalib(void)
 	Msg_Push(&fifo, buf[1], &msg_head_pos_calib, &uplPosCalibMsg);
 }
 
-static void Upl_PushEpsCalib(void)
+static void Upl_PushDpiCalibMsg(void)
+{
+	uplDpiCalibMsg.frame_id++;
+	uplDpiCalibMsg.data.x = cfg.dpi.x * DPI_CALIB_VALUE_SCALE;
+	uplDpiCalibMsg.data.y = cfg.dpi.y * DPI_CALIB_VALUE_SCALE;
+	uplDpiCalibMsg.data.z = cfg.dpi.z * DPI_CALIB_VALUE_SCALE;
+	uplDpiCalibMsg.data.e = cfg.dpi.e * DPI_CALIB_VALUE_SCALE;
+	uplDpiCalibMsg.data.c = cfg.dpi.c * DPI_CALIB_VALUE_SCALE;
+	Msg_Push(&fifo, buf[1], &msg_head_dpi_calib, &uplDpiCalibMsg);
+}
+
+static void Upl_PushEpsCalibMsg(void)
 {
 	uplEpsCalibMsg.frame_id++;
 	uplEpsCalibMsg.data.x = cfg.eps.x * EPS_CALIB_VALUE_SCALE;
@@ -106,6 +130,13 @@ static void Upl_PushEpsCalib(void)
 	uplEpsCalibMsg.data.e = cfg.eps.e * EPS_CALIB_VALUE_SCALE;
 	uplEpsCalibMsg.data.c = cfg.eps.c * EPS_CALIB_VALUE_SCALE;
 	Msg_Push(&fifo, buf[1], &msg_head_eps_calib, &uplEpsCalibMsg);
+}
+
+static void Upl_PushComCalibMsg(void)
+{
+	uplComCalibMsg.frame_id++;
+	memcpy(&uplComCalibMsg, &cfg.com, sizeof(ComCalib_t));
+	Msg_Push(&fifo, buf[1], &msg_head_com_calib, &uplComCalibMsg);
 }
 
 static void Upl_SendMsg(void)
@@ -117,6 +148,106 @@ static void Upl_SendMsg(void)
 	}
 }
 
+static uint8_t Upl_SendRcpMsg(void)
+{
+	if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_rcp.attr.length + MSG_LEN_EXT) {
+		Upl_PushRcpMsg();
+		Upl_SendMsg();
+		return 1;
+	}
+	return 0;
+}
+
+static uint8_t Upl_SendKylinMsg(void)
+{
+	if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_kylin.attr.length + MSG_LEN_EXT) {
+		Upl_PushKylinMsg();
+		Upl_SendMsg();
+		return 1;
+	}
+	return 0;
+}
+
+static uint8_t Upl_SendStatuMsg(void)
+{
+	if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_statu.attr.length + MSG_LEN_EXT) {
+		Upl_PushStatuMsg();
+		Upl_SendMsg();
+		return 1;
+	}
+	return 0;
+}
+
+static uint8_t Upl_SendSubscMsg(void)
+{
+	if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_subsc.attr.length + MSG_LEN_EXT) {
+		Upl_PushSubscMsg();
+		Upl_SendMsg();
+		return 1;
+	}
+	return 0;
+}
+
+static uint8_t Upl_SendZGyroMsg(void)
+{
+	if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_zgyro.attr.length + MSG_LEN_EXT) {
+		Upl_PushZGyroMsg();
+		Upl_SendMsg();
+		return 1;
+	}
+	return 0;
+}
+
+static uint8_t Upl_SendSonarMsg(void)
+{
+	if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_sonar.attr.length + MSG_LEN_EXT) {
+		Upl_PushSonarMsg();
+		Upl_SendMsg();
+		return 1;
+	}
+	return 0;
+}
+
+static uint8_t Upl_SendPosCalibMsg(void)
+{
+	if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_pos_calib.attr.length + MSG_LEN_EXT) {
+		Upl_PushPosCalibMsg();
+		Upl_SendMsg();
+		return 1;
+	}
+	return 0;
+}
+
+static uint8_t Upl_SendDpiCalibMsg(void)
+{
+	if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_dpi_calib.attr.length + MSG_LEN_EXT) {
+		Upl_PushDpiCalibMsg();
+		Upl_SendMsg();
+		return 1;
+	}
+	return 0;
+}
+
+static uint8_t Upl_SendEpsCalibMsg(void)
+{
+	if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_eps_calib.attr.length + MSG_LEN_EXT) {
+		Upl_PushEpsCalibMsg();
+		Upl_SendMsg();
+		return 1;
+	}
+	return 0;
+}
+
+static uint8_t Upl_SendComCalibMsg(void)
+{
+	if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_com_calib.attr.length + MSG_LEN_EXT) {
+		Upl_PushComCalibMsg();
+		Upl_SendMsg();
+		return 1;
+	}
+	return 0;
+}
+
 void Upl_Init(void)
 {
 	FIFO_Init(&fifo, buf[0], UPL_BUF_SIZE);
@@ -126,51 +257,51 @@ void Upl_Proc(void)
 {
 	switch (uplMsgType) {
 		case MSG_TYPE_RCP:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_rcp.attr.length + MSG_LEN_EXT) {
-				Upl_PushRcpMsg();
-				Upl_SendMsg();
+			if (Upl_SendRcpMsg()) {
 				uplMsgType = MSG_TYPE_KYLIN;
 			}
 			break;
 		case MSG_TYPE_KYLIN:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_kylin.attr.length + MSG_LEN_EXT) {
-				Upl_PushKylinMsg();
-				Upl_SendMsg();
+			if (Upl_SendKylinMsg()) {
 				uplMsgType = MSG_TYPE_STATU;
 			}
 			break;
 		case MSG_TYPE_STATU:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_statu.attr.length + MSG_LEN_EXT) {
-				Upl_PushStatuMsg();
-				Upl_SendMsg();
+			if (Upl_SendStatuMsg()) {
+				uplMsgType = MSG_TYPE_SUBSC;
+			}
+			break;
+		case MSG_TYPE_SUBSC:
+			if (Upl_SendSubscMsg()) {
+				uplMsgType = MSG_TYPE_SONAR;
+			}
+			break;
+		case MSG_TYPE_ZGYRO:
+			if (Upl_SendZGyroMsg()) {
 				uplMsgType = MSG_TYPE_SONAR;
 			}
 			break;
 		case MSG_TYPE_SONAR:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_sonar.attr.length + MSG_LEN_EXT) {
-				Upl_PushSr04sMsg();
-				Upl_SendMsg();
-				uplMsgType = MSG_TYPE_ZGYRO;
-			}
-			break;
-		case MSG_TYPE_ZGYRO:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_zgyro.attr.length + MSG_LEN_EXT) {
-				Upl_PushZGyroMsg();
-				Upl_SendMsg();
+			if (Upl_SendSonarMsg()) {
 				uplMsgType = MSG_TYPE_POS_CALIB;
 			}
 			break;
 		case MSG_TYPE_POS_CALIB:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_pos_calib.attr.length + MSG_LEN_EXT) {
-				Upl_PushPosCalib();
-				Upl_SendMsg();
+			if (Upl_SendPosCalibMsg()) {
 				uplMsgType = MSG_TYPE_EPS_CALIB;
 			}
 			break;
+		case MSG_TYPE_DPI_CALIB:
+			if (Upl_SendDpiCalibMsg()) {
+				uplMsgType = MSG_TYPE_EPS_CALIB;
+			}
 		case MSG_TYPE_EPS_CALIB:
-			if (IOS_COM_DEV.GetTxFifoFree() >= msg_head_eps_calib.attr.length + MSG_LEN_EXT) {
-				Upl_PushEpsCalib();
-				Upl_SendMsg();
+			if (Upl_SendEpsCalibMsg()) {
+				uplMsgType = MSG_TYPE_COM_CALIB;
+			}
+			break;
+		case MSG_TYPE_COM_CALIB:
+			if (Upl_SendComCalibMsg()) {
 				uplMsgType = MSG_TYPE_RCP;
 			}
 			break;

@@ -7,7 +7,15 @@
 .\objects\ctl.o: ..\..\app\inc\mec.h
 .\objects\ctl.o: ..\..\app\inc\cfg.h
 .\objects\ctl.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\ctl.o: ..\..\asp\inc\msg.h
+.\objects\ctl.o: ..\..\asp\inc\cbus.h
+.\objects\ctl.o: ..\..\asp\inc\dbus.h
+.\objects\ctl.o: ..\..\asp\inc\rcp.h
+.\objects\ctl.o: ..\..\asp\inc\hcp.h
+.\objects\ctl.o: ..\..\asp\inc\fifo.h
+.\objects\ctl.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\ctl.o: ..\..\asp\inc\calib.h
+.\objects\ctl.o: ..\..\asp\inc\crc16.h
 .\objects\ctl.o: ..\..\app\inc\fos.h
 .\objects\ctl.o: ..\..\drv\inc\flash.h
 .\objects\ctl.o: ..\..\bsp\inc\platform.h
@@ -37,8 +45,6 @@
 .\objects\ctl.o: ..\..\bsp\inc\beep.h
 .\objects\ctl.o: ..\..\bsp\inc\stm32util.h
 .\objects\ctl.o: ..\..\bsp\inc\btm.h
-.\objects\ctl.o: ..\..\asp\inc\fifo.h
-.\objects\ctl.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\ctl.o: ..\..\hal\inc\hal_uart.h
 .\objects\ctl.o: ..\..\bsp\inc\btn.h
 .\objects\ctl.o: ..\..\bsp\inc\can1.h

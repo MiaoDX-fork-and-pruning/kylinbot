@@ -37,14 +37,17 @@ extern "C" {
 #define LIMIT_MIN(V,M) do { if (V < M) V = M; } while (0)
 #define LIMIT(X,MIN,MAX) do { X = X > MAX ? MAX : X < MIN ? MIN : X; } while(0)
 #define LIMIT_ABS(V,M) LIMIT(V,-M,M)
+#define LIMIT_AROUND(V,B,D) LIMIT(V,B-D,B+D)
 #define ABSVAL(V) ( (V) < 0 ? (-V) : (V) )
 
 typedef uint32_t Flag_t;
 
 float min(float v1, float v2);
 float max(float v1, float v2);
+float limit(float val, float min, float max);
+float limit_abs(float val, float abs);
+float limit_around(float val, float base, float delta);
 float map(float val, float min1, float max1, float min2, float max2);
-float constrain(float val, float min, float max);
 
 Flag_t Flag_Get(const Flag_t* flag, Flag_t mask);
 Flag_t Flag_Hit(const Flag_t* flag, Flag_t mask);

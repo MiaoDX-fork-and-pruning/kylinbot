@@ -28,7 +28,7 @@ extern "C" {
 #include <stdint.h>
 #include <string.h>
 
-#include "calib.h"
+#include "msg.h"
 #include "fos.h"
 #include "fun.h"
 
@@ -44,8 +44,13 @@ extern "C" {
 #define CFG_FLAG_GPL                (1u<<9)
 #define CFG_FLAG_DPI                (1u<<10)
 #define CFG_FLAG_EPS                (1u<<11)
-	
-#define CFG_FLAG_ALL (CFG_FLAG_IMU|CFG_FLAG_MAG|CFG_FLAG_RMP|CFG_FLAG_VEL|CFG_FLAG_MEC|CFG_FLAG_POS|CFG_FLAG_CVL|CFG_FLAG_CPL|CFG_FLAG_GVL|CFG_FLAG_GPL|CFG_FLAG_DPI|CFG_FLAG_EPS)
+#define CFG_FLAG_COM                (1u<<12)
+
+#define CFG_FLAG_ALL (CFG_FLAG_IMU|CFG_FLAG_MAG|CFG_FLAG_RMP| \
+                      CFG_FLAG_VEL|CFG_FLAG_MEC|CFG_FLAG_POS| \
+											CFG_FLAG_CVL|CFG_FLAG_CPL|CFG_FLAG_GVL| \
+											CFG_FLAG_GPL|CFG_FLAG_DPI|CFG_FLAG_EPS| \
+											CFG_FLAG_COM)
 
 #pragma pack(1)
 
@@ -59,7 +64,8 @@ typedef VelParam_t VelCfg_t;
 typedef MecParam_t MecCfg_t;
 typedef PosParam_t PosCfg_t;
 typedef EpsParam_t EpsCfg_t;
-typedef EpsParam_t DpiCfg_t;
+typedef DpiParam_t DpiCfg_t;
+typedef ComCalib_t ComCfg_t;
 
 typedef struct
 {
@@ -76,12 +82,13 @@ typedef struct
 	VelCfg_t vel; // Velocity configuration
 	MecCfg_t mec; // Mecanum configuration
 	PosCfg_t pos; // Position configuration
-	PIDCfg_t cvl; // Chasis velocity loop
-	PIDCfg_t cpl; // Chasis position loop
-	PIDCfg_t gvl; // Gimbal velocity loop
-	PIDCfg_t gpl; // Gimbal position loop
-	DpiCfg_t dpi; // DPI 
-	EpsCfg_t eps; // Position error epsilon
+	PIDCfg_t cvl; // Chasis velocity loop configuration
+	PIDCfg_t cpl; // Chasis position loop configuration
+	PIDCfg_t gvl; // Gimbal velocity loop configuration
+	PIDCfg_t gpl; // Gimbal position loop configuration
+	DpiCfg_t dpi; // DPI configuration
+	EpsCfg_t eps; // Position error epsilon configuration
+	ComCfg_t com; // Communication configuration
 }Cfg_t; // Application Configuration
 
 #pragma pack()
@@ -223,11 +230,11 @@ typedef struct
 	.c = DPC_CFG_DEF, \
 }
 
-#define EPX_CFG_DEF 0.1f
-#define EPY_CFG_DEF 0.1f
-#define EPZ_CFG_DEF 0.1f
-#define EPE_CFG_DEF 0.1f
-#define EPC_CFG_DEF 0.1f
+#define EPX_CFG_DEF 0.01f
+#define EPY_CFG_DEF 0.01f
+#define EPZ_CFG_DEF 0.01f
+#define EPE_CFG_DEF 0.01f
+#define EPC_CFG_DEF 0.01f
 #define EPS_CFG_DEF \
 { \
 	.x = EPX_CFG_DEF, \
@@ -235,6 +242,14 @@ typedef struct
 	.z = EPZ_CFG_DEF, \
 	.e = EPE_CFG_DEF, \
 	.c = EPC_CFG_DEF, \
+}
+
+#define MSG_CFG_DEF MSG_TYPE_DEF
+#define TDM_CFG_DEF 2000
+#define COM_CFG_DEF \
+{ \
+	.msg_type = MSG_CFG_DEF, \
+	.tdm_tdiv = TDM_CFG_DEF, \
 }
 
 #define CFG_DEF \

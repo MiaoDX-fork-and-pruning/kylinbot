@@ -9,7 +9,14 @@
 .\objects\rci.o: ..\..\asp\inc\fun.h
 .\objects\rci.o: ..\..\app\inc\mec.h
 .\objects\rci.o: ..\..\app\inc\cfg.h
+.\objects\rci.o: ..\..\asp\inc\msg.h
+.\objects\rci.o: ..\..\asp\inc\cbus.h
+.\objects\rci.o: ..\..\asp\inc\dbus.h
+.\objects\rci.o: ..\..\asp\inc\hcp.h
+.\objects\rci.o: ..\..\asp\inc\fifo.h
+.\objects\rci.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\rci.o: ..\..\asp\inc\calib.h
+.\objects\rci.o: ..\..\asp\inc\crc16.h
 .\objects\rci.o: ..\..\app\inc\fos.h
 .\objects\rci.o: ..\..\drv\inc\flash.h
 .\objects\rci.o: ..\..\bsp\inc\platform.h
@@ -39,8 +46,6 @@
 .\objects\rci.o: ..\..\bsp\inc\beep.h
 .\objects\rci.o: ..\..\bsp\inc\stm32util.h
 .\objects\rci.o: ..\..\bsp\inc\btm.h
-.\objects\rci.o: ..\..\asp\inc\fifo.h
-.\objects\rci.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\rci.o: ..\..\hal\inc\hal_uart.h
 .\objects\rci.o: ..\..\bsp\inc\btn.h
 .\objects\rci.o: ..\..\bsp\inc\can1.h

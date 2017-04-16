@@ -65,6 +65,12 @@
 .\objects\wsm.o: ..\..\app\inc\odo.h
 .\objects\wsm.o: ..\..\app\inc\mec.h
 .\objects\wsm.o: ..\..\app\inc\cfg.h
+.\objects\wsm.o: ..\..\asp\inc\msg.h
+.\objects\wsm.o: ..\..\asp\inc\cbus.h
+.\objects\wsm.o: ..\..\asp\inc\dbus.h
+.\objects\wsm.o: ..\..\asp\inc\rcp.h
+.\objects\wsm.o: ..\..\asp\inc\hcp.h
 .\objects\wsm.o: ..\..\asp\inc\calib.h
+.\objects\wsm.o: ..\..\asp\inc\crc16.h
 .\objects\wsm.o: ..\..\app\inc\fos.h
 .\objects\wsm.o: ..\..\asp\inc\mecanum.h

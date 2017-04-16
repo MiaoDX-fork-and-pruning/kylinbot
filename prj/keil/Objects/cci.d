@@ -7,7 +7,15 @@
 .\objects\cci.o: ..\..\app\inc\mec.h
 .\objects\cci.o: ..\..\app\inc\cfg.h
 .\objects\cci.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\cci.o: ..\..\asp\inc\msg.h
+.\objects\cci.o: ..\..\asp\inc\cbus.h
+.\objects\cci.o: ..\..\asp\inc\dbus.h
+.\objects\cci.o: ..\..\asp\inc\rcp.h
+.\objects\cci.o: ..\..\asp\inc\hcp.h
+.\objects\cci.o: ..\..\asp\inc\fifo.h
+.\objects\cci.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\cci.o: ..\..\asp\inc\calib.h
+.\objects\cci.o: ..\..\asp\inc\crc16.h
 .\objects\cci.o: ..\..\app\inc\fos.h
 .\objects\cci.o: ..\..\drv\inc\flash.h
 .\objects\cci.o: ..\..\bsp\inc\platform.h
@@ -37,8 +45,6 @@
 .\objects\cci.o: ..\..\bsp\inc\beep.h
 .\objects\cci.o: ..\..\bsp\inc\stm32util.h
 .\objects\cci.o: ..\..\bsp\inc\btm.h
-.\objects\cci.o: ..\..\asp\inc\fifo.h
-.\objects\cci.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\cci.o: ..\..\hal\inc\hal_uart.h
 .\objects\cci.o: ..\..\bsp\inc\btn.h
 .\objects\cci.o: ..\..\bsp\inc\can1.h
@@ -66,9 +72,6 @@
 .\objects\cci.o: ..\..\asp\inc\pid.h
 .\objects\cci.o: ..\..\asp\inc\rmp.h
 .\objects\cci.o: ..\..\app\inc\dci.h
-.\objects\cci.o: ..\..\asp\inc\dbus.h
-.\objects\cci.o: ..\..\asp\inc\rcp.h
-.\objects\cci.o: ..\..\asp\inc\hcp.h
 .\objects\cci.o: ..\..\app\inc\rci.h
 .\objects\cci.o: ..\..\asp\inc\rcf.h
 .\objects\cci.o: ..\..\app\inc\hci.h
@@ -81,4 +84,3 @@
 .\objects\cci.o: ..\..\app\inc\wsm.h
 .\objects\cci.o: ..\..\app\inc\ini.h
 .\objects\cci.o: ..\..\app\inc\pwr.h
-.\objects\cci.o: ..\..\asp\inc\cbus.h

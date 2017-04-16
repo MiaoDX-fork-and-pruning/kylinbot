@@ -34,7 +34,7 @@ int main()
 	{
 		Srs_Proc();
 		Dnl_Proc();
-		if (Clk_GetUsTick() % 2000 == 0) {
+		if (Clk_GetUsTick() % cfg.com.tdm_tdiv == 0) {
 			Upl_Proc();
 		}
   }

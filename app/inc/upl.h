@@ -27,6 +27,7 @@ extern "C" {
 
 #include "msg.h"
 #include "cal.h"
+#include "com.h"
 #include "cmd.h"
 #include "odo.h"
 #include "ctl.h"
@@ -42,12 +43,17 @@ extern "C" {
 extern MsgType_t uplMsgType;
 
 extern RcpMsg_t uplRcpMsg;
+	
 extern KylinMsg_t uplKylinMsg;
-extern SonarMsg_t uplSonarMsg;
 extern ZGyroMsg_t uplZGyroMsg;
+extern SonarMsg_t uplSonarMsg;
 extern StatuMsg_t uplStatuMsg;
+extern SubscMsg_t uplSubscMsg;;
+
 extern PosCalibMsg_t uplPosCalibMsg;
+extern DpiCalibMsg_t uplDpiCalibMsg;
 extern EpsCalibMsg_t uplEpsCalibMsg;
+extern ComCalibMsg_t uplComCalibMsg;
 
 void Upl_Init(void);
 void Upl_Proc(void);

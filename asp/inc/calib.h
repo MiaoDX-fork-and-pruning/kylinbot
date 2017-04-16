@@ -207,6 +207,25 @@ typedef struct
 	float ch; // Calw position high, unit: rad
 }PosParam_t; // Position Parameters
 
+#define DPI_CALIB_VALUE_SCALE 1e3f
+typedef struct
+{
+	uint16_t x; // Position x dpi, unit: mm
+	uint16_t y; // Position y dpi, unit: mm
+	uint16_t z; // Position z dpi, unit: 1e-3rad
+	uint16_t e; // Position e dpi, unit: mm
+	uint16_t c; // Position c dpi, unit: 1e-3rad
+}DpiCalib_t;
+
+typedef struct
+{
+	float x; // Position x dpi, unit: m
+	float y; // Position y dpi, unit: m
+	float z; // Position z dpi, unit: rad
+	float e; // Position e dpi, unit: m
+	float c; // Position c dpi, unit: rad
+}DpiParam_t;
+
 #define EPS_CALIB_VALUE_SCALE 1e3f
 typedef struct
 {
@@ -226,24 +245,11 @@ typedef struct
 	float c; // Position c epsilon, unit: rad
 }EpsParam_t;
 
-#define DPI_CALIB_VALUE_SCALE 1e3f
 typedef struct
 {
-	uint16_t x; // Position x dpi, unit: mm
-	uint16_t y; // Position y dpi, unit: mm
-	uint16_t z; // Position z dpi, unit: 1e-3rad
-	uint16_t e; // Position e dpi, unit: mm
-	uint16_t c; // Position c dpi, unit: 1e-3rad
-}DpiCalib_t;
-
-typedef struct
-{
-	float x; // Position x dpi, unit: m
-	float y; // Position y dpi, unit: m
-	float z; // Position z dpi, unit: rad
-	float e; // Position e dpi, unit: m
-	float c; // Position c dpi, unit: rad
-}DpiParam_t;
+	uint32_t msg_type;
+	uint32_t tdm_tdiv;
+}ComCalib_t;
 
 typedef struct
 {
@@ -283,6 +289,8 @@ void Calib_GetMec(MecCalib_t* MecCalib, const MecParam_t* MecParam);
 void Calib_SetMec(MecParam_t* MecParam, const MecCalib_t* MecCalib);
 void Calib_GetPos(PosCalib_t* PosCalib, const PosParam_t* PosParam);
 void Calib_SetPos(PosParam_t* PosParam, const PosCalib_t* PosCalib);
+void Calib_GetDpi(DpiCalib_t* dpiCalib, const DpiParam_t* dpiParam);
+void Calib_SetDpi(DpiParam_t* dpiParam, const DpiCalib_t* dpiCalib);
 void Calib_GetEps(EpsCalib_t* epsCalib, const EpsParam_t* epsParam);
 void Calib_SetEps(EpsParam_t* epsParam, const EpsCalib_t* epsCalib);
 

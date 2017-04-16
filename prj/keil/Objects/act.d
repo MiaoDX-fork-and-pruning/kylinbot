@@ -59,7 +59,13 @@
 .\objects\act.o: ..\..\app\inc\cmd.h
 .\objects\act.o: ..\..\app\inc\mec.h
 .\objects\act.o: ..\..\app\inc\cfg.h
+.\objects\act.o: ..\..\asp\inc\msg.h
+.\objects\act.o: ..\..\asp\inc\cbus.h
+.\objects\act.o: ..\..\asp\inc\dbus.h
+.\objects\act.o: ..\..\asp\inc\rcp.h
+.\objects\act.o: ..\..\asp\inc\hcp.h
 .\objects\act.o: ..\..\asp\inc\calib.h
+.\objects\act.o: ..\..\asp\inc\crc16.h
 .\objects\act.o: ..\..\app\inc\fos.h
 .\objects\act.o: ..\..\asp\inc\mecanum.h
 .\objects\act.o: ..\..\app\inc\odo.h

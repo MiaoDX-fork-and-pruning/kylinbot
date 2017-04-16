@@ -3,7 +3,15 @@
 .\objects\mec.o: ..\..\app\inc\cfg.h
 .\objects\mec.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\mec.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\mec.o: ..\..\asp\inc\msg.h
+.\objects\mec.o: ..\..\asp\inc\cbus.h
+.\objects\mec.o: ..\..\asp\inc\dbus.h
+.\objects\mec.o: ..\..\asp\inc\rcp.h
+.\objects\mec.o: ..\..\asp\inc\hcp.h
+.\objects\mec.o: ..\..\asp\inc\fifo.h
+.\objects\mec.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\mec.o: ..\..\asp\inc\calib.h
+.\objects\mec.o: ..\..\asp\inc\crc16.h
 .\objects\mec.o: ..\..\app\inc\fos.h
 .\objects\mec.o: ..\..\drv\inc\flash.h
 .\objects\mec.o: ..\..\bsp\inc\platform.h

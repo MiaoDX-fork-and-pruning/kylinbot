@@ -128,6 +128,24 @@ void Calib_SetPos(PosParam_t* PosParam, const PosCalib_t* PosCalib)
 	PosParam->el = PosCalib->el / POS_CALIB_VALUE_SCALE;
 }
 
+void Calib_GetDpi(DpiCalib_t* dpiCalib, const DpiParam_t* dpiParam)
+{
+	dpiCalib->x = dpiParam->x * EPS_CALIB_VALUE_SCALE;
+	dpiCalib->y = dpiParam->y * EPS_CALIB_VALUE_SCALE;
+	dpiCalib->z = dpiParam->z * EPS_CALIB_VALUE_SCALE;
+	dpiCalib->e = dpiParam->e * EPS_CALIB_VALUE_SCALE;
+	dpiCalib->c = dpiParam->c * EPS_CALIB_VALUE_SCALE;
+}
+
+void Calib_SetDpi(DpiParam_t* dpiParam, const DpiCalib_t* dpiCalib)
+{
+	dpiParam->x = dpiCalib->x * EPS_CALIB_VALUE_SCALE;
+	dpiParam->y = dpiCalib->y * EPS_CALIB_VALUE_SCALE;
+	dpiParam->z = dpiCalib->z * EPS_CALIB_VALUE_SCALE;
+	dpiParam->e = dpiCalib->e * EPS_CALIB_VALUE_SCALE;
+	dpiParam->c = dpiCalib->c * EPS_CALIB_VALUE_SCALE;
+}
+
 void Calib_GetEps(EpsCalib_t* epsCalib, const EpsParam_t* epsParam)
 {
 	epsCalib->x = epsParam->x * EPS_CALIB_VALUE_SCALE;
@@ -145,5 +163,6 @@ void Calib_SetEps(EpsParam_t* epsParam, const EpsCalib_t* epsCalib)
 	epsParam->e = epsCalib->e * EPS_CALIB_VALUE_SCALE;
 	epsParam->c = epsCalib->c * EPS_CALIB_VALUE_SCALE;
 }
+
 
 

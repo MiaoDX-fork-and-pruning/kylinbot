@@ -15,10 +15,6 @@
  */
  
 #include "dnl.h"
-#include "upl.h"
-#include "cmd.h"
-#include "dci.h"
-#include "fun.h"
 
 /*****************************************/
 /*        Down-Link Communication        */
@@ -39,10 +35,12 @@ CalibMsg_t dnlCalibMsg;
 PIDCalib_t dnlPIDCalib;
 IMUCalib_t dnlIMUCalib;
 MagCalib_t dnlMagCalib;
-VelCalib_t dnlVelCalib;
 MecCalib_t dnlMecCalib;
 PosCalib_t dnlPosCalib;
+VelCalib_t dnlVelCalib;
+DpiCalib_t dnlDpiCalib;
 EpsCalib_t dnlEpsCalib;
+ComCalib_t dnlComCalib;
 
 static uint8_t buf[2][DNL_BUF_SIZE];
 static FIFO_t fifo;
@@ -86,8 +84,9 @@ static void Dnl_ProcCBusMsg(const CBusMsg_t* cbusMsg)
 static void Dnl_ProcSubscMsg(const SubscMsg_t* subscMsg)
 {
 	dnlMsgType |= MSG_TYPE_SUBSC;
-	if (subscMsg->msg_type & MSG_TYPE_CALIB) {
-	}
+	// TODO
+	cfg.com.msg_type = subscMsg->msg_type;
+	cfg_sync_flag = 1;
 }
 
 static void Dnl_ProcCalibMsg(const CalibMsg_t* calibMsg)
@@ -125,14 +124,6 @@ static void Dnl_ProcMagCalib(const MagCalib_t* MagCalib)
 	cfg_sync_flag = 1;
 }
 
-static void Dnl_ProcVelCalib(const VelCalib_t* VelCalib)
-{
-	dnlMsgType |= MSG_TYPE_VEL_CALIB;
-	Calib_SetVel(&cfg.vel, VelCalib);
-	Cfg_SetFlag(CFG_FLAG_VEL);
-	cfg_sync_flag = 1;
-}
-
 static void Dnl_ProcMecCalib(const MecCalib_t* MecCalib)
 {
 	dnlMsgType |= MSG_TYPE_MEC_CALIB;
@@ -146,6 +137,14 @@ static void Dnl_ProcPosCalib(const PosCalib_t* PosCalib)
 	dnlMsgType |= MSG_TYPE_POS_CALIB;
 	Calib_SetPos(&cfg.pos, PosCalib);
 	Cfg_SetFlag(CFG_FLAG_POS);
+	cfg_sync_flag = 1;
+}
+
+static void Dnl_ProcVelCalib(const VelCalib_t* VelCalib)
+{
+	dnlMsgType |= MSG_TYPE_VEL_CALIB;
+	Calib_SetVel(&cfg.vel, VelCalib);
+	Cfg_SetFlag(CFG_FLAG_VEL);
 	cfg_sync_flag = 1;
 }
 
@@ -169,10 +168,24 @@ static void Dnl_ProcPIDCalib(const PIDCalib_t* PIDCalib)
 	}
 }
 
+static void Dnl_ProcDpiCalib(const DpiCalib_t* dpiCalib)
+{
+	dnlMsgType |= MSG_TYPE_EPS_CALIB;
+	Calib_SetDpi(&cfg.dpi, dpiCalib);
+	cfg_sync_flag = 1;
+}
+
 static void Dnl_ProcEpsCalib(const EpsCalib_t* epsCalib)
 {
 	dnlMsgType |= MSG_TYPE_EPS_CALIB;
 	Calib_SetEps(&cfg.eps, epsCalib);
+	cfg_sync_flag = 1;
+}
+
+static void Dnl_ProcComCalib(const ComCalib_t* comCalib)
+{
+	dnlMsgType |= MSG_TYPE_COM_CALIB;
+	memcpy(&cfg.com, comCalib, sizeof(ComCalib_t));
 	cfg_sync_flag = 1;
 }
 
@@ -228,17 +241,23 @@ void Dnl_Proc(void)
 	if (Msg_Pop(&fifo, buf[1], &msg_head_mag_calib, &dnlMagCalib)) {
 		Dnl_ProcMagCalib(&dnlMagCalib);
 	}
-	if (Msg_Pop(&fifo, buf[1], &msg_head_vel_calib, &dnlVelCalib)) {
-		Dnl_ProcVelCalib(&dnlVelCalib);
-	}
 	if (Msg_Pop(&fifo, buf[1], &msg_head_mec_calib, &dnlMecCalib)) {
 		Dnl_ProcMecCalib(&dnlMecCalib);
 	}
 	if (Msg_Pop(&fifo, buf[1], &msg_head_pos_calib, &dnlPosCalib)) {
 		Dnl_ProcPosCalib(&dnlPosCalib);
 	}
+	if (Msg_Pop(&fifo, buf[1], &msg_head_vel_calib, &dnlVelCalib)) {
+		Dnl_ProcVelCalib(&dnlVelCalib);
+	}
+	if (Msg_Pop(&fifo, buf[1], &msg_head_dpi_calib, &dnlDpiCalib)) {
+		Dnl_ProcDpiCalib(&dnlDpiCalib);
+	}
 	if (Msg_Pop(&fifo, buf[1], &msg_head_eps_calib, &dnlEpsCalib)) {
 		Dnl_ProcEpsCalib(&dnlEpsCalib);
+	}
+	if (Msg_Pop(&fifo, buf[1], &msg_head_com_calib, &dnlComCalib)) {
+		Dnl_ProcComCalib(&dnlComCalib);
 	}
 }
 

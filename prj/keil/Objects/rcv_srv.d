@@ -13,7 +13,12 @@
 .\objects\rcv_srv.o: ..\..\asp\inc\fun.h
 .\objects\rcv_srv.o: ..\..\app\inc\mec.h
 .\objects\rcv_srv.o: ..\..\app\inc\cfg.h
+.\objects\rcv_srv.o: ..\..\asp\inc\msg.h
+.\objects\rcv_srv.o: ..\..\asp\inc\cbus.h
+.\objects\rcv_srv.o: ..\..\asp\inc\fifo.h
+.\objects\rcv_srv.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\rcv_srv.o: ..\..\asp\inc\calib.h
+.\objects\rcv_srv.o: ..\..\asp\inc\crc16.h
 .\objects\rcv_srv.o: ..\..\app\inc\fos.h
 .\objects\rcv_srv.o: ..\..\drv\inc\flash.h
 .\objects\rcv_srv.o: ..\..\bsp\inc\platform.h
@@ -43,8 +48,6 @@
 .\objects\rcv_srv.o: ..\..\bsp\inc\beep.h
 .\objects\rcv_srv.o: ..\..\bsp\inc\stm32util.h
 .\objects\rcv_srv.o: ..\..\bsp\inc\btm.h
-.\objects\rcv_srv.o: ..\..\asp\inc\fifo.h
-.\objects\rcv_srv.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\rcv_srv.o: ..\..\hal\inc\hal_uart.h
 .\objects\rcv_srv.o: ..\..\bsp\inc\btn.h
 .\objects\rcv_srv.o: ..\..\bsp\inc\can1.h

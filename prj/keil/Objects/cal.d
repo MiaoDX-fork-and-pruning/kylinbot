@@ -62,7 +62,13 @@
 .\objects\cal.o: ..\..\app\inc\wdg.h
 .\objects\cal.o: ..\..\app\inc\mec.h
 .\objects\cal.o: ..\..\app\inc\cfg.h
+.\objects\cal.o: ..\..\asp\inc\msg.h
+.\objects\cal.o: ..\..\asp\inc\cbus.h
+.\objects\cal.o: ..\..\asp\inc\dbus.h
+.\objects\cal.o: ..\..\asp\inc\rcp.h
+.\objects\cal.o: ..\..\asp\inc\hcp.h
 .\objects\cal.o: ..\..\asp\inc\calib.h
+.\objects\cal.o: ..\..\asp\inc\crc16.h
 .\objects\cal.o: ..\..\app\inc\fos.h
 .\objects\cal.o: ..\..\asp\inc\mecanum.h
 .\objects\cal.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

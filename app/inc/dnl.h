@@ -52,10 +52,12 @@ extern CalibMsg_t dnlCalibMsg;
 extern PIDCalib_t dnlPIDCalib;
 extern IMUCalib_t dnlIMUCalib;
 extern MagCalib_t dnlMagCalib;
-extern VelCalib_t dnlVelCalib;
 extern MecCalib_t dnlMecCalib;
 extern PosCalib_t dnlPosCalib;
+extern VelCalib_t dnlVelCalib;
+extern DpiCalib_t dnlDpiCalib;
 extern EpsCalib_t dnlEpsCalib;
+extern ComCalib_t dnlComCalib;
 
 #ifdef __cplusplus
 }

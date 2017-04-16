@@ -25,8 +25,8 @@
 extern "C" {
 #endif
 
-#include "upl.h"
 #include "dnl.h"
+#include "upl.h"
 #include "wdg.h"
 
 void Com_Init(void);

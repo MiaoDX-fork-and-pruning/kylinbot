@@ -43,11 +43,11 @@ typedef struct
 
 #define CBUS_FLAG_BIT_INI (1u<<31) // Initialization flag bit
 #define CBUS_FLAG_BIT_ABS (1u<<30) // Absolute control flag bit
-#define CBUS_FLAG_BIT_PXC (1u<<0)  // Position X error convergence flag bit
-#define CBUS_FLAG_BIT_PYC (1u<<1)  // Position Y error convergence flag bit
-#define CBUS_FLAG_BIT_PZC (1u<<2)  // Position Z error convergence flag bit
-#define CBUS_FLAG_BIT_PEC (1u<<3)  // Position E error convergence flag bit
-#define CBUS_FLAG_BIT_PCC (1u<<4)  // Position C error convergence flag bit
+#define CBUS_FLAG_BIT_PXC (1u<<29)  // Position X error convergence flag bit
+#define CBUS_FLAG_BIT_PYC (1u<<28)  // Position Y error convergence flag bit
+#define CBUS_FLAG_BIT_PZC (1u<<27)  // Position Z error convergence flag bit
+#define CBUS_FLAG_BIT_PEC (1u<<26)  // Position E error convergence flag bit
+#define CBUS_FLAG_BIT_PCC (1u<<25)  // Position C error convergence flag bit
 #define CBUS_FLAG_BIT_PSC (CBUS_FLAG_BIT_PXC | CBUS_FLAG_BIT_PYC | CBUS_FLAG_BIT_PZC | CBUS_FLAG_BIT_PEC | CBUS_FLAG_BIT_PCC) // All position convergence flag bits
 #define CBUS_VALUE_SCALE 1e3f
 #pragma pack(1)

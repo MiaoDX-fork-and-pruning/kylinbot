@@ -20,9 +20,9 @@
 /*            Watch Dog            */
 /***********************************/
 
-static const uint32_t CNT[WDG_NUM] = WDG_OVERFLOW_CNT_DEFAULT;
+static const uint32_t CNT[WDG_NUM] = WDG_OVERFLOW_CNT_DEF;
 
-static uint32_t cnt[WDG_NUM] = WDG_OVERFLOW_CNT_DEFAULT;
+static uint32_t cnt[WDG_NUM] = WDG_OVERFLOW_CNT_DEF;
 
 static uint32_t err = 0xFFFFFFFF;
 

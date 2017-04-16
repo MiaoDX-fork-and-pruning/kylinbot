@@ -37,7 +37,7 @@ static void GetChassisStateRef(const Hcp_t* hcp)
 	float sz = hcp->key.press.Shift ? cfg.vel.z : cfg.vel.z / 2.f;
 	float vx = hcp->key.press.A ? -sx : hcp->key.press.D ? sx : 0;
 	float vy = hcp->key.press.S ? -sy : hcp->key.press.W ? sy : 0;
-	float mx = constrain(hcp->mouse.x, -MOUSE_SPEED_MAX, MOUSE_SPEED_MAX);
+	float mx = limit_abs(hcp->mouse.x, MOUSE_SPEED_MAX);
 	float vz = map(mx, -MOUSE_SPEED_MAX, MOUSE_SPEED_MAX, -sz, sz);
 	cmd.cv.x = Maf_Proc(&maf[0], vx);
 	cmd.cv.y = Maf_Proc(&maf[1], vy);

@@ -33,6 +33,7 @@ static void GetChassisStateRef(const CBus_t* cbus)
 	float vxr = cbus->cv.x / CBUS_VALUE_SCALE;
 	float vyr = cbus->cv.y / CBUS_VALUE_SCALE;
 	float vzr = cbus->cv.z / CBUS_VALUE_SCALE;
+	
 	float dpx = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_ABS) ? pxr - odo.cp.x : pxr;
 	float dpy = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_ABS) ? pyr - odo.cp.y : pyr;
 	float dpz = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_ABS) ? pzr - odo.cp.z : pzr;
@@ -41,9 +42,9 @@ static void GetChassisStateRef(const CBus_t* cbus)
 	LIMIT_ABS(vyr, cfg.vel.y);
 	LIMIT_ABS(vzr, cfg.vel.z);
 	
-	cmd.cv.x = map(dpx, -CCI_DPT_TH, CCI_DPT_TH, -1, 1) * vxr;
-	cmd.cv.y = map(dpy, -CCI_DPT_TH, CCI_DPT_TH, -1, 1) * vyr;
-	cmd.cv.z = map(dpz, -CCI_DPR_TH, CCI_DPR_TH, -1, 1) * vzr;
+	cmd.cv.x = map(dpx, -cfg.dpi.x, cfg.dpi.x, -1, 1) * vxr;
+	cmd.cv.y = map(dpy, -cfg.dpi.y, cfg.dpi.y, -1, 1) * vyr;
+	cmd.cv.z = map(dpz, -cfg.dpi.z, cfg.dpi.z, -1, 1) * vzr;
 	
 	//cmd.cv.x = cbus->cv.x / CBUS_VALUE_SCALE;
 	LIMIT(cmd.cv.x, -cfg.vel.x, cfg.vel.x);
@@ -64,6 +65,7 @@ static void GetGrabberStateRef(const CBus_t* cbus)
 	float pcr = cbus->gp.c / CBUS_VALUE_SCALE;
 	float ver = cbus->gv.e / CBUS_VALUE_SCALE;
 	float vcr = cbus->gv.c / CBUS_VALUE_SCALE;
+	
 	float dpe = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_ABS) ? per - odo.gp.e : per;
 	float dpc = Flag_Get(&cbus->fs, CBUS_FLAG_BIT_ABS) ? per - odo.gp.c : pcr;
 	
@@ -73,8 +75,8 @@ static void GetGrabberStateRef(const CBus_t* cbus)
 	LIMIT_ABS(ver, cfg.vel.e);
 	LIMIT_ABS(vcr, cfg.vel.c);
 	
-	cmd.gv.e = map(dpe, -CCI_DPE_TH, CCI_DPE_TH, -1, 1) * ver;
-	cmd.gv.c = map(dpc, -CCI_DPC_TH, CCI_DPC_TH, -1, 1) * vcr;
+	cmd.gv.e = map(dpe, -cfg.dpi.e, cfg.dpi.e, -1, 1) * ver;
+	cmd.gv.c = map(dpc, -cfg.dpi.c, cfg.dpi.c, -1, 1) * vcr;
 	
 	//cmd.gv.e = cbus->gv.e / CBUS_VALUE_SCALE;
 	LIMIT(cmd.gv.e, -cfg.vel.e, cfg.vel.e);

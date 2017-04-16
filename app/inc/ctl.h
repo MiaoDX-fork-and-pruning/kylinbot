@@ -34,12 +34,10 @@ extern "C" {
 typedef struct
 {
 	PeriphsState_t fs;
-	ChassisState_t cp;
 	ChassisState_t cv;
 	ChassisState_t cc;
 	MecanumState_t mv;
 	MecanumState_t mc;
-	GrabberState_t gp;
 	GrabberState_t gv;
 	GrabberState_t gc;
 }Ctl_t;

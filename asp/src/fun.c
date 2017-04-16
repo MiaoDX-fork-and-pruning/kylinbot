@@ -30,15 +30,28 @@ float max(float v1, float v2)
 	return v1 > v2 ? v1 : v2;
 }
 
+float limit(float val, float min, float max)
+{
+	return val < min ? min : val > max ? max : val;
+}
+
+float limit_abs(float val, float abs)
+{
+	if (abs < 0) abs = -abs;
+	LIMIT_ABS(val, abs);
+	return val;
+}
+
+float limit_around(float val, float base, float delta)
+{
+	LIMIT_AROUND(val, base, delta);
+	return val;
+}
+
 float map(float val, float min1, float max1, float min2, float max2)
 {
 	LIMIT(val, min1, max1);
 	return ((val-min1)*(max2-min2)/(max1-min1)+min2);
-}
-
-float constrain(float val, float min, float max)
-{
-	return val < min ? min : val > max ? max : val;
 }
 
 Flag_t Flag_Get(const Flag_t* flag, Flag_t mask)

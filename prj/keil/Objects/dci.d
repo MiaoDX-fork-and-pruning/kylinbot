@@ -12,7 +12,12 @@
 .\objects\dci.o: ..\..\asp\inc\fun.h
 .\objects\dci.o: ..\..\app\inc\mec.h
 .\objects\dci.o: ..\..\app\inc\cfg.h
+.\objects\dci.o: ..\..\asp\inc\msg.h
+.\objects\dci.o: ..\..\asp\inc\cbus.h
+.\objects\dci.o: ..\..\asp\inc\fifo.h
+.\objects\dci.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\dci.o: ..\..\asp\inc\calib.h
+.\objects\dci.o: ..\..\asp\inc\crc16.h
 .\objects\dci.o: ..\..\app\inc\fos.h
 .\objects\dci.o: ..\..\drv\inc\flash.h
 .\objects\dci.o: ..\..\bsp\inc\platform.h
@@ -42,8 +47,6 @@
 .\objects\dci.o: ..\..\bsp\inc\beep.h
 .\objects\dci.o: ..\..\bsp\inc\stm32util.h
 .\objects\dci.o: ..\..\bsp\inc\btm.h
-.\objects\dci.o: ..\..\asp\inc\fifo.h
-.\objects\dci.o: D:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\dci.o: ..\..\hal\inc\hal_uart.h
 .\objects\dci.o: ..\..\bsp\inc\btn.h
 .\objects\dci.o: ..\..\bsp\inc\can1.h

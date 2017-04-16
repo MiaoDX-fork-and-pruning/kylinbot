@@ -87,6 +87,3 @@
 .\objects\dnl.o: ..\..\app\inc\wsm.h
 .\objects\dnl.o: ..\..\app\inc\ini.h
 .\objects\dnl.o: ..\..\app\inc\pwr.h
-.\objects\dnl.o: ..\..\app\inc\upl.h
-.\objects\dnl.o: ..\..\app\inc\srs.h
-.\objects\dnl.o: ..\..\app\inc\clk.h
