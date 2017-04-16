@@ -253,63 +253,76 @@ void Upl_Init(void)
 	FIFO_Init(&fifo, buf[0], UPL_BUF_SIZE);
 }
 
-#define UPL_SPIN() do { uplMsgType = CROL(uplMsgType, sizeof(MsgType_t), 1) & cfg.com.msg_type; } while (0)
+//#define UPL_SPIN() do { uplMsgType = CROL(uplMsgType, 32, 1) & cfg.com.msg_type; } while (0)
 void Upl_Proc(void)
 {
-	UPL_SPIN();
+	//UPL_SPIN();
 	switch (uplMsgType) {
 		case MSG_TYPE_RCP:
 			if (Upl_SendRcpMsg()) {
-				UPL_SPIN();
+				//UPL_SPIN();
+				uplMsgType = MSG_TYPE_KYLIN;
 			}
 			break;
 		case MSG_TYPE_KYLIN:
 			if (Upl_SendKylinMsg()) {
-				UPL_SPIN();
+				//UPL_SPIN();
+				uplMsgType = MSG_TYPE_STATU;
 			}
 			break;
 		case MSG_TYPE_STATU:
 			if (Upl_SendStatuMsg()) {
-				UPL_SPIN();
+				//UPL_SPIN();
+				uplMsgType = MSG_TYPE_SUBSC;
 			}
 			break;
 		case MSG_TYPE_SUBSC:
 			if (Upl_SendSubscMsg()) {
-				UPL_SPIN();
+				//UPL_SPIN();
+				uplMsgType = MSG_TYPE_ZGYRO;
 			}
 			break;
 		case MSG_TYPE_ZGYRO:
 			if (Upl_SendZGyroMsg()) {
-				UPL_SPIN();
+				//UPL_SPIN();
+				uplMsgType = MSG_TYPE_SONAR;
 			}
 			break;
 		case MSG_TYPE_SONAR:
 			if (Upl_SendSonarMsg()) {
-				UPL_SPIN();
+				//UPL_SPIN();
+				uplMsgType = MSG_TYPE_POS_CALIB;
 			}
 			break;
 		case MSG_TYPE_POS_CALIB:
 			if (Upl_SendPosCalibMsg()) {
-				UPL_SPIN();
+				//UPL_SPIN();
+				uplMsgType = MSG_TYPE_RCP;
 			}
 			break;
+		/*
 		case MSG_TYPE_DPI_CALIB:
 			if (Upl_SendDpiCalibMsg()) {
-				UPL_SPIN();
+				//UPL_SPIN();
+				uplMsgType = MSG_TYPE_EPS_CALIB;
 			}
 		case MSG_TYPE_EPS_CALIB:
 			if (Upl_SendEpsCalibMsg()) {
-				UPL_SPIN();
+				//UPL_SPIN();
+				uplMsgType = MSG_TYPE_COM_CALIB;
 			}
 			break;
 		case MSG_TYPE_COM_CALIB:
 			if (Upl_SendComCalibMsg()) {
-				UPL_SPIN();
+				//UPL_SPIN();
+				uplMsgType = MSG_TYPE_RCP;
 			}
 			break;
+		*/
 		default:
-			UPL_SPIN();
-		break;
+			//UPL_SPIN();
+		  uplMsgType = MSG_TYPE_RCP;
+		  break;
 	}
 }
 

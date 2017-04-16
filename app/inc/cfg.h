@@ -268,6 +268,7 @@ typedef struct
 	GPL_CFG_DEF, \
 	DPI_CFG_DEF, \
 	EPS_CFG_DEF, \
+	COM_CFG_DEF, \
 }
 
 CfgVer_t Cfg_GetVer(void);
