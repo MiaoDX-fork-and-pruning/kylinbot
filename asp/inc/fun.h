@@ -40,6 +40,9 @@ extern "C" {
 #define LIMIT_AROUND(V,B,D) LIMIT(V,B-D,B+D)
 #define ABSVAL(V) ( (V) < 0 ? (-V) : (V) )
 
+#define CROL(V,M,N) ((V<<N)|(V>>(M-N)))
+#define CROR(V,M,N) ((V>>N)|(V<<(M-N)))
+
 typedef uint32_t Flag_t;
 
 float min(float v1, float v2);

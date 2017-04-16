@@ -16,8 +16,6 @@
  
 #include "main.h"
 
-uint32_t frame_cnt = 0;
-
 int main()
 {
 	// Boot KOS

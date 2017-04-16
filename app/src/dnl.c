@@ -186,6 +186,7 @@ static void Dnl_ProcComCalib(const ComCalib_t* comCalib)
 {
 	dnlMsgType |= MSG_TYPE_COM_CALIB;
 	memcpy(&cfg.com, comCalib, sizeof(ComCalib_t));
+	LIMIT(cfg.com.tdm_tdiv, 1000, 100000);
 	cfg_sync_flag = 1;
 }
 

@@ -253,60 +253,62 @@ void Upl_Init(void)
 	FIFO_Init(&fifo, buf[0], UPL_BUF_SIZE);
 }
 
+#define UPL_SPIN() do { uplMsgType = CROL(uplMsgType, sizeof(MsgType_t), 1) & cfg.com.msg_type; } while (0)
 void Upl_Proc(void)
 {
+	UPL_SPIN();
 	switch (uplMsgType) {
 		case MSG_TYPE_RCP:
 			if (Upl_SendRcpMsg()) {
-				uplMsgType = MSG_TYPE_KYLIN;
+				UPL_SPIN();
 			}
 			break;
 		case MSG_TYPE_KYLIN:
 			if (Upl_SendKylinMsg()) {
-				uplMsgType = MSG_TYPE_STATU;
+				UPL_SPIN();
 			}
 			break;
 		case MSG_TYPE_STATU:
 			if (Upl_SendStatuMsg()) {
-				uplMsgType = MSG_TYPE_SUBSC;
+				UPL_SPIN();
 			}
 			break;
 		case MSG_TYPE_SUBSC:
 			if (Upl_SendSubscMsg()) {
-				uplMsgType = MSG_TYPE_SONAR;
+				UPL_SPIN();
 			}
 			break;
 		case MSG_TYPE_ZGYRO:
 			if (Upl_SendZGyroMsg()) {
-				uplMsgType = MSG_TYPE_SONAR;
+				UPL_SPIN();
 			}
 			break;
 		case MSG_TYPE_SONAR:
 			if (Upl_SendSonarMsg()) {
-				uplMsgType = MSG_TYPE_POS_CALIB;
+				UPL_SPIN();
 			}
 			break;
 		case MSG_TYPE_POS_CALIB:
 			if (Upl_SendPosCalibMsg()) {
-				uplMsgType = MSG_TYPE_EPS_CALIB;
+				UPL_SPIN();
 			}
 			break;
 		case MSG_TYPE_DPI_CALIB:
 			if (Upl_SendDpiCalibMsg()) {
-				uplMsgType = MSG_TYPE_EPS_CALIB;
+				UPL_SPIN();
 			}
 		case MSG_TYPE_EPS_CALIB:
 			if (Upl_SendEpsCalibMsg()) {
-				uplMsgType = MSG_TYPE_COM_CALIB;
+				UPL_SPIN();
 			}
 			break;
 		case MSG_TYPE_COM_CALIB:
 			if (Upl_SendComCalibMsg()) {
-				uplMsgType = MSG_TYPE_RCP;
+				UPL_SPIN();
 			}
 			break;
 		default:
-			uplMsgType = MSG_TYPE_RCP;
+			UPL_SPIN();
 		break;
 	}
 }
